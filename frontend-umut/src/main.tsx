@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
 import { store } from './app/store';
+import { ThemeProvider } from '@mui/material';
 import App from './App';
 import theme from './theme';
 

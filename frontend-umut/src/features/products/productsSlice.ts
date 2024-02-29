@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { FinishedProductI, FinishedProductMutation } from '../../types';
 import { createProduct, deleteProduct, editProduct, fetchOneProduct, fetchProducts } from './productThunks';
+import { FinishedProductI, FinishedProductMutation } from '../../types';
 
 interface ProductsState {
   products: FinishedProductI[],

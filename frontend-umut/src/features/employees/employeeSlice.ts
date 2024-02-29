@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { EmployeeMutation, EmployeesI } from '../../types';
-import { createEmployees, deleteEmployees, editEmployee, fetchEmployees, fetchOneEmployee } from './employeeThunks';
 import { RootState } from '../../app/store';
+import { createEmployees, deleteEmployees, editEmployee, fetchEmployees, fetchOneEmployee } from './employeeThunks';
+import { EmployeeMutation, EmployeesI } from '../../types';
 
 
 interface EmployeesState {

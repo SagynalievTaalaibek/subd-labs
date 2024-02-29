@@ -1,7 +1,7 @@
-import { PositionI } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { createPositions, deletePosition, editPosition, fetchOnePosition, fetchPositions } from './positionsThunks';
+import { PositionI } from '../../types';
 
 interface PositionsState {
   positions: PositionI[],

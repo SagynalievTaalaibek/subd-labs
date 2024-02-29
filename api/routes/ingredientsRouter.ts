@@ -70,8 +70,8 @@ ingredientsRouter.put('/ingredients', async (req, res, next) => {
 
     const existingIngredient = await pool.query(
       'SELECT i.id, i.product_id, i.raw_material_id, i.quantity ' +
-      'FROM ingredients i ' +
-      'WHERE raw_material_id = $1 AND product_id = $2',
+        'FROM ingredients i ' +
+        'WHERE raw_material_id = $1 AND product_id = $2',
       [raw_material_id, product_id],
     );
 

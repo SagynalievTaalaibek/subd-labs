@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { RawMaterialI, RawMaterialMutation } from '../../types';
 import { createMaterial, deleteMaterial, editMaterial, fetchMaterials, fetchOneMaterial } from './materialThunks';
+import { RawMaterialI, RawMaterialMutation } from '../../types';
 
 interface materialsState {
   materials: RawMaterialI[],

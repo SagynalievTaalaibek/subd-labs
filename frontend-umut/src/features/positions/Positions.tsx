@@ -1,15 +1,15 @@
-import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
-import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
-import PositionTable from './components/PositionTable';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { deletePosition, fetchPositions } from './positionsThunks';
 import {
   selectDeletePositionLoading,
   selectFetchPositionLoading,
   selectPositions
 } from './positionsSlice';
-import { deletePosition, fetchPositions } from './positionsThunks';
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
+import Button from '@mui/material/Button';
+import PositionTable from './components/PositionTable';
 
 const Positions = () => {
   const dispatch = useAppDispatch();

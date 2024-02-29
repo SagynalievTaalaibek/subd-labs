@@ -1,18 +1,18 @@
-import Typography from '@mui/material/Typography';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { fetchUnits } from '../units/unitThunks';
+import { editProduct, fetchOneProduct } from './productThunks';
+import { selectUnits } from '../units/unitSlice';
 import {
   selectEditProductsLoading,
   selectFetchOneProductsLoading,
   selectOneProducts
 } from './productsSlice';
+import Typography from '@mui/material/Typography';
 import { CircularProgress } from '@mui/material';
-import { selectUnits } from '../units/unitSlice';
-import { useEffect } from 'react';
-import { fetchUnits } from '../units/unitThunks';
-import { editProduct, fetchOneProduct } from './productThunks';
-import { FinishedProductMutation, FinishedProductWithId } from '../../types';
 import FinishedProductForm from './components/FinishedProductForm';
+import { FinishedProductMutation, FinishedProductWithId } from '../../types';
 
 const EditProduct = () => {
   const {id} = useParams() as { id: string };

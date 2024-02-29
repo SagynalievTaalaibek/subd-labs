@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { deleteProduct, fetchProducts } from './productThunks';
+import { selectDeleteProductsLoading, selectFetchProductsLoading, selectProducts } from './productsSlice';
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectDeleteProductsLoading, selectFetchProductsLoading, selectProducts } from './productsSlice';
-import { deleteProduct, fetchProducts } from './productThunks';
 import FinishedProductTable from './components/FinishedProductTable';
 
 

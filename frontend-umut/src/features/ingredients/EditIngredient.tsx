@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IngredientMutation, IngredientsWithID } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { editIngredient, fetchOneIngredient } from './ingredientsThunks';
+import { fetchMaterials } from '../materials/materialThunks';
+import { fetchProducts } from '../products/productThunks';
 import {
   selectEditIngredientLoading,
   selectFetchOneIngredientLoading,
@@ -10,11 +13,8 @@ import { selectProducts } from '../products/productsSlice';
 import { selectMaterials } from '../materials/materialSlice';
 import Typography from '@mui/material/Typography';
 import IngredientForm from './components/IngredientForm';
-import { editIngredient, fetchOneIngredient } from './ingredientsThunks';
 import { CircularProgress } from '@mui/material';
-import { useEffect } from 'react';
-import { fetchProducts } from '../products/productThunks';
-import { fetchMaterials } from '../materials/materialThunks';
+import { IngredientMutation, IngredientsWithID } from '../../types';
 
 const EditIngredient = () => {
   const {id} = useParams() as { id: string };

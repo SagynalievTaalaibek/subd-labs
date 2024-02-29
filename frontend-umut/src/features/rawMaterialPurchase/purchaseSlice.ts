@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { RawMaterialPurchaseI, RawMaterialPurchaseMutation } from '../../types';
 import {
   createRawMaterialsPurchase,
   deleteRawMaterialsPurchase,
   fetchRawMaterialsPurchases
 } from './purchaseThunks';
+import { RawMaterialPurchaseI, RawMaterialPurchaseMutation } from '../../types';
 
 interface RawMaterialsPurchaseState {
   rawMaterialsPurchase: RawMaterialPurchaseI[],

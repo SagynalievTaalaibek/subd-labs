@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { fetchOneProduct } from '../../products/productThunks';
+import { selectOneProducts } from '../../products/productsSlice';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Box from '@mui/material/Box';
 import { FormControl, InputLabel, Select, TextField } from '@mui/material';
@@ -8,9 +11,6 @@ import { LoadingButton } from '@mui/lab';
 import SaveIcon from '@mui/icons-material/Save';
 import Button from '@mui/material/Button';
 import { EmployeesI, FinishedProductI, ProductSalesMutation } from '../../../types';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectOneProducts } from '../../products/productsSlice';
-import { fetchOneProduct } from '../../products/productThunks';
 
 interface Props {
   onSubmit: (productSales: ProductSalesMutation) => void;

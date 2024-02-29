@@ -1,9 +1,9 @@
-import Typography from '@mui/material/Typography';
-import PositionForm from './components/PositionForm';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { createPositions } from './positionsThunks';
 import { selectCreatePositionLoading } from './positionsSlice';
+import Typography from '@mui/material/Typography';
+import PositionForm from './components/PositionForm';
 
 const NewPositions = () => {
   const dispatch = useAppDispatch();

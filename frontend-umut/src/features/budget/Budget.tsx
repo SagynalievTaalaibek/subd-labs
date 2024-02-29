@@ -1,3 +1,8 @@
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { addSumBudget, fetchBudget } from './budgetThunks';
+import { selectAddBudgetLoading, selectBudget, selectFetchBudgetLoading } from './budgetSlice';
 import { Alert, CircularProgress, Grid, Modal, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -5,12 +10,7 @@ import { AccountBalanceWallet, CurrencyExchange, TrendingUp } from '@mui/icons-m
 import Box from '@mui/material/Box';
 import { LoadingButton } from '@mui/lab';
 import SaveIcon from '@mui/icons-material/Save';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { BUDGET_ID } from '../../constants';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectAddBudgetLoading, selectBudget, selectFetchBudgetLoading } from './budgetSlice';
-import { addSumBudget, fetchBudget } from './budgetThunks';
 
 const style = {
   position: 'absolute',

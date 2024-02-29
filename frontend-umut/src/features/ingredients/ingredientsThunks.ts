@@ -1,5 +1,5 @@
-import axiosApi from '../../axiosApi';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import axiosApi from '../../axiosApi';
 import { IngredientI, IngredientMutation, IngredientsWithID } from '../../types';
 
 export const createIngredient = createAsyncThunk<void, IngredientMutation>(

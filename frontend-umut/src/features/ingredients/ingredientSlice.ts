@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IngredientI, IngredientMutation } from '../../types';
 import { RootState } from '../../app/store';
 import {
   createIngredient,
@@ -8,6 +7,7 @@ import {
   fetchIngredients,
   fetchOneIngredient
 } from './ingredientsThunks';
+import { IngredientI, IngredientMutation } from '../../types';
 
 interface IngredientsState {
   ingredients: IngredientI[],

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ProductionI, ProductionMutation } from '../../types';
 import axiosApi from '../../axiosApi';
+import { ProductionI, ProductionMutation } from '../../types';
 
 export const creteProduction = createAsyncThunk<void, ProductionMutation>(
   'production/create',

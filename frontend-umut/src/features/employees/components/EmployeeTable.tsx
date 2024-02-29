@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -8,7 +9,6 @@ import TableBody from '@mui/material/TableBody';
 import { Button, Grid } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import TableContainer from '@mui/material/TableContainer';
-import { Link } from 'react-router-dom';
 import { EmployeesI } from '../../../types';
 
 interface Props {

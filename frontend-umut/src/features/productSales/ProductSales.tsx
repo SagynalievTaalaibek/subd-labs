@@ -1,14 +1,14 @@
-import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
-import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { deleteProductSales, fetchProductSales } from './productSalesThunks';
 import {
   selectDeleteProductSalesLoading,
   selectFetchProductSalesLoading,
   selectProductSales,
 } from './productSalesSlice';
-import { deleteProductSales, fetchProductSales } from './productSalesThunks';
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
+import Button from '@mui/material/Button';
 import ProductSalesTable from './components/ProductSalesTable';
 
 const ProductSales = () => {

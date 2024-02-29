@@ -1,8 +1,5 @@
-import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
-import Button from '@mui/material/Button';
-import EmployeeTable from './components/EmployeeTable';
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { deleteEmployees, fetchEmployees } from './employeeThunks';
 import {
@@ -10,6 +7,9 @@ import {
   selectEmployees,
   selectFetchEmployeeLoading
 } from './employeeSlice';
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
+import Button from '@mui/material/Button';
+import EmployeeTable from './components/EmployeeTable';
 
 const Employee = () => {
   const dispatch = useAppDispatch();

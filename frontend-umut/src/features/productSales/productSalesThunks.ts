@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ProductSalesI, ProductSalesMutation } from '../../types';
 import axiosApi from '../../axiosApi';
+import { ProductSalesI, ProductSalesMutation } from '../../types';
 
 
 export const createProductSales = createAsyncThunk<void, ProductSalesMutation>(

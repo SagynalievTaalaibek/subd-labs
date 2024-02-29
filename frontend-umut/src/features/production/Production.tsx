@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
-import Button from '@mui/material/Button';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { deleteProduction, fetchProduction } from './productionThunks';
-import { selectFetchProductsLoading } from '../products/productsSlice';
-import ProductionTable from './components/ProductionTable';
 import { selectProductionDeleteLoading, selectProductions } from './productionSlice';
+import { selectFetchProductsLoading } from '../products/productsSlice';
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
+import Button from '@mui/material/Button';
+import ProductionTable from './components/ProductionTable';
 
 const Production = () => {
   const dispatch = useAppDispatch();

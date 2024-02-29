@@ -1,19 +1,19 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { useEffect } from 'react';
-import Typography from '@mui/material/Typography';
-import { selectEmployees } from '../employees/employeeSlice';
+import { fetchProducts, productMinusUpdate } from '../products/productThunks';
 import { fetchEmployees } from '../employees/employeeThunks';
 import { addSumBudget, fetchBudget } from '../budget/budgetThunks';
-import { Grid } from '@mui/material';
-import { fetchProducts, productMinusUpdate } from '../products/productThunks';
-import { selectProducts } from '../products/productsSlice';
-import ProductSalesForm from './components/ProductSalesForm';
-import { selectBudget } from '../budget/budgetSlice';
-import { BUDGET_ID } from '../../constants';
 import { createProductSales } from './productSalesThunks';
-import { ProductSalesMutation } from '../../types';
+import { selectEmployees } from '../employees/employeeSlice';
+import { selectProducts } from '../products/productsSlice';
+import { selectBudget } from '../budget/budgetSlice';
 import { selectCreateProductSalesLoading } from './productSalesSlice';
+import Typography from '@mui/material/Typography';
+import { Grid } from '@mui/material';
+import ProductSalesForm from './components/ProductSalesForm';
+import { BUDGET_ID } from '../../constants';
+import { ProductSalesMutation } from '../../types';
 
 const NewProductSales = () => {
     const navigate = useNavigate();

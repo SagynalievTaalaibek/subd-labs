@@ -1,13 +1,13 @@
-import { useNavigate } from 'react-router-dom';
-import { EmployeeMutation } from '../../types';
-import Typography from '@mui/material/Typography';
-import EmployeeForm from './components/EmployeeForm';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectPositions } from '../positions/positionsSlice';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { fetchPositions } from '../positions/positionsThunks';
 import { createEmployees } from './employeeThunks';
+import { selectPositions } from '../positions/positionsSlice';
 import { selectCreateEmployeeLoading } from './employeeSlice';
+import Typography from '@mui/material/Typography';
+import EmployeeForm from './components/EmployeeForm';
+import { EmployeeMutation } from '../../types';
 
 const NewEmployee = () => {
   const dispatch = useAppDispatch();

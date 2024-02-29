@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import Typography from '@mui/material/Typography';
-import { BUDGET_ID } from '../../constants';
 import { editBudget, fetchBudget } from './budgetThunks';
 import { selectBudget, selectEditBudgetLoading } from './budgetSlice';
+import Typography from '@mui/material/Typography';
 import BudgetForm from './components/BudgetForm';
+import { BUDGET_ID } from '../../constants';
 import { BudgetI, BudgetMutation } from '../../types';
 
 const EditBudget = () => {

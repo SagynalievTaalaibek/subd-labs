@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { createUnits } from './unitThunks';
+import { selectCreateUnitLoading } from './unitSlice';
 import Typography from '@mui/material/Typography';
 import UnitsForm from './components/UnitsForm';
-import { selectCreateUnitLoading } from './unitSlice';
 
 const NewUnits = () => {
   const navigate = useNavigate();

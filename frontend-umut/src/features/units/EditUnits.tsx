@@ -1,11 +1,11 @@
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { editUnit, fetchOneUnit } from './unitThunks';
 import { selectEditUnitLoading, selectOneUnit } from './unitSlice';
 import Typography from '@mui/material/Typography';
 import UnitsForm from './components/UnitsForm';
-import { editUnit, fetchOneUnit } from './unitThunks';
 import { UnitsI } from '../../types';
-import { useEffect } from 'react';
 
 const EditUnits = () => {
   const {id} = useParams() as { id: string };

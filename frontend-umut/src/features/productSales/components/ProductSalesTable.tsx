@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,9 +8,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Grid } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { ProductSalesI } from '../../../types';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import dayjs from 'dayjs';
+import { ProductSalesI } from '../../../types';
 
 dayjs.extend(LocalizedFormat);
 

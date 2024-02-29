@@ -1,4 +1,14 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { deleteIngredient, fetchIngredients } from './ingredientsThunks';
+import { fetchProducts } from '../products/productThunks';
+import { selectFetchProductsLoading, selectProducts } from '../products/productsSlice';
+import {
+  selectDeleteIngredientLoading,
+  selectFetchIngredientsLoading,
+  selectIngredients
+} from './ingredientSlice';
 import {
   CircularProgress,
   Dialog,
@@ -10,19 +20,9 @@ import {
   Select
 } from '@mui/material';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import IngredientsTable from './components/IngredientsTable';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectFetchProductsLoading, selectProducts } from '../products/productsSlice';
-import {
-  selectDeleteIngredientLoading,
-  selectFetchIngredientsLoading,
-  selectIngredients
-} from './ingredientSlice';
-import { deleteIngredient, fetchIngredients } from './ingredientsThunks';
-import { fetchProducts } from '../products/productThunks';
 
 const Ingredients = () => {
   const dispatch = useAppDispatch();

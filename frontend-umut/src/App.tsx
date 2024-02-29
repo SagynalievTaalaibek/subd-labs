@@ -24,7 +24,6 @@ import Budget from './features/budget/Budget';
 import EditBudget from './features/budget/EditBudget';
 import RawMaterialPurchase from './features/rawMaterialPurchase/RawMaterialPurchase';
 import NewRawMaterialPurchase from './features/rawMaterialPurchase/NewRawMaterialPurchase';
-import EditRawMaterialPurchase from './features/rawMaterialPurchase/EditRawMaterialPurchase';
 import ProductSales from './features/productSales/ProductSales';
 import NewProductSales from './features/productSales/NewProductSales';
 import NotFound from './components/NotFound';
@@ -65,7 +64,6 @@ const App = () => {
             <Route path="/budget/update/:id" element={<EditBudget/>}/>
             <Route path="/purchase" element={<RawMaterialPurchase/>}/>
             <Route path="/purchase/create" element={<NewRawMaterialPurchase/>}/>
-            <Route path="/purchase/update/:id" element={<EditRawMaterialPurchase/>}/>
             <Route path="/product-sales" element={<ProductSales/>}/>
             <Route path="/product-sales/create" element={<NewProductSales/>}/>
             <Route path="/production" element={<Production/>}/>

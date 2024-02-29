@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectProducts } from '../products/productsSlice';
-import { selectMaterials } from '../materials/materialSlice';
-import { selectCreateIngredientLoading } from './ingredientSlice';
 import { createIngredient } from './ingredientsThunks';
 import { fetchProducts } from '../products/productThunks';
 import { fetchMaterials } from '../materials/materialThunks';
+import { selectProducts } from '../products/productsSlice';
+import { selectMaterials } from '../materials/materialSlice';
+import { selectCreateIngredientLoading } from './ingredientSlice';
 import Typography from '@mui/material/Typography';
 import IngredientForm from './components/IngredientForm';
 import { IngredientMutation } from '../../types';

@@ -1,11 +1,11 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import Typography from '@mui/material/Typography';
-import { selectUnits } from '../units/unitSlice';
-import { useEffect } from 'react';
 import { fetchUnits } from '../units/unitThunks';
 import { createProduct } from './productThunks';
 import { selectCreateProductsLoading } from './productsSlice';
+import { selectUnits } from '../units/unitSlice';
+import Typography from '@mui/material/Typography';
 import FinishedProductForm from './components/FinishedProductForm';
 import { FinishedProductMutation } from '../../types';
 

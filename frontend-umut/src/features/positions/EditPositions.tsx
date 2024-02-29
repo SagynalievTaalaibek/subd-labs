@@ -1,24 +1,19 @@
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { editPosition, fetchOnePosition } from './positionsThunks';
+import { selectEditPositionLoading, selectFetchOnePositionLoading, selectOnePosition } from './positionsSlice';
 import Typography from '@mui/material/Typography';
-import PositionForm from './components/PositionForm';
-import {
-  selectEditPositionLoading,
-  selectFetchOnePositionLoading,
-  selectOnePosition
-} from './positionsSlice';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { PositionI } from '../../types';
 import { CircularProgress } from '@mui/material';
+import PositionForm from './components/PositionForm';
+import { PositionI } from '../../types';
 
 const EditPositions = () => {
   const {id} = useParams() as { id: string };
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const onePositions = useSelector(selectOnePosition);
-  const editLoading = useSelector(selectEditPositionLoading);
+  const onePositions = useAppSelector(selectOnePosition);
+  const editLoading = useAppSelector(selectEditPositionLoading);
   const fetchOnePositionLoading = useAppSelector(selectFetchOnePositionLoading);
 
   useEffect(() => {

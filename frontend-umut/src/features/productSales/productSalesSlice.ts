@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ProductSalesI } from '../../types';
 import { RootState } from '../../app/store';
 import { createProductSales, deleteProductSales, fetchProductSales } from './productSalesThunks';
+import { ProductSalesI } from '../../types';
 
 interface ProductSalesState {
   productSales: ProductSalesI[],
