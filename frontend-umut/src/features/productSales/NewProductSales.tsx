@@ -66,7 +66,13 @@ const NewProductSales = () => {
         budget_amount: updateBudget.toString(),
       }));
 
-      await dispatch(createProductSales(productSales));
+      await dispatch(createProductSales({
+        product_id: productSales.product_id,
+        amount: updateBudget.toString(),
+        quantity: productSales.quantity,
+        sale_date: productSales.sale_date,
+        employee_id: productSales.employee_id
+      }));
       await dispatch(fetchBudget());
       await dispatch(fetchProducts());
       navigate('/product-sales');
