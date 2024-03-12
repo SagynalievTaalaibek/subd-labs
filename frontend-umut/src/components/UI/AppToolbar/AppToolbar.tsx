@@ -36,10 +36,10 @@ function ResponsiveAppBar() {
 
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Icecream sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, fontSize: '30px'}} />
+          <Icecream sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, fontSize: '30px' }} />
           <Typography
             variant="h6"
             noWrap
@@ -100,7 +100,7 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
-          <Icecream sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, fontSize: '30px'}} />
+          <Icecream sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, fontSize: '30px' }} />
           <Typography
             variant="h5"
             noWrap
@@ -126,7 +126,7 @@ function ResponsiveAppBar() {
                 onClick={handleCloseNavMenu}
                 component={Link}
                 to={`/${page.toLocaleLowerCase()}`}
-                sx={{ my: 2, color: 'white', display: 'block', fontWeight: '700' }}
+                sx={{ my: 2, color: 'white', display: 'block', fontWeight: '600' }}
               >
                 {page}
               </Button>

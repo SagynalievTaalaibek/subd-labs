@@ -28,7 +28,7 @@ export const deleteProduction = createAsyncThunk<void, string>(
   'production/delete',
   async (id) => {
     try {
-      await axiosApi.delete(`/production${id}`);
+      await axiosApi.delete(`/production/${id}`);
     } catch (error: any) {
       if (error.response.status === 500) {
         console.error('Internal Server Error:', error.message);

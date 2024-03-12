@@ -85,6 +85,7 @@ export interface IngredientI {
   id: string;
   product_id: string;
   raw_material_name: string;
+  raw_material_id: string;
   quantity: string;
 }
 
@@ -148,15 +149,6 @@ export interface ProductSalesMutation {
   amount: string,
 }
 
-export interface ProductSalesMutationWithID {
-  id: string;
-  employee_id: string,
-  product_id: string,
-  sale_date: string,
-  quantity: string,
-  amount: string,
-}
-
 export interface ProductionI {
   id: string;
   product_name: string;
@@ -171,3 +163,17 @@ export interface ProductionMutation {
   production_date: string;
   employee_id: string
 }
+
+export interface MinusMaterial {
+  id: string;
+  amount: string;
+  quantity: string;
+}
+
+export interface ProductionSendData {
+  materialsMinus: MinusMaterial[],
+  productsSum: string;
+  selectedQuantity: string;
+}
+
+// salary

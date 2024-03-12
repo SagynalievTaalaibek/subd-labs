@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { fetchIngredients } from '../../ingredients/ingredientsThunks';
-import { selectFetchIngredientsLoading, selectIngredients } from '../../ingredients/ingredientSlice';
+import { fetchMaterials } from '../../materials/materialThunks';
+import { clearIngredients, selectFetchIngredientsLoading, selectIngredients } from '../../ingredients/ingredientSlice';
+import { selectMaterials } from '../../materials/materialSlice';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Box from '@mui/material/Box';
-import { CircularProgress, FormControl, Grid, InputLabel, Select, TextField } from '@mui/material';
+import { Alert, CircularProgress, FormControl, Grid, InputLabel, Select, TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import { LoadingButton } from '@mui/lab';
 import SaveIcon from '@mui/icons-material/Save';
@@ -17,15 +19,14 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
-import { EmployeesI, FinishedProductI, ProductionMutation } from '../../../types';
+import { EmployeesI, FinishedProductI, MinusMaterial, ProductionMutation, ProductionSendData } from '../../../types';
 
 interface Props {
-  onSubmit: (productionDate: ProductionMutation) => void;
+  onSubmit: (productionDate: ProductionMutation, sendData: ProductionSendData) => void;
   products: FinishedProductI[];
   employees: EmployeesI[],
   isLoading: boolean;
 }
-
 
 const ProductionForm: React.FC<Props> = ({
   onSubmit,
@@ -35,7 +36,10 @@ const ProductionForm: React.FC<Props> = ({
 }) => {
   const dispatch = useAppDispatch();
   const ingredients = useAppSelector(selectIngredients);
+  const materials = useAppSelector(selectMaterials);
   const fetchIngredientsLoading = useAppSelector(selectFetchIngredientsLoading);
+  const notValidMaterials: string[] = [];
+  const [helperText, setHelperText] = useState('');
   const [productionState, setProductionState] = useState<ProductionMutation>({
     product_id: '',
     production_date: '',
@@ -43,14 +47,16 @@ const ProductionForm: React.FC<Props> = ({
     quantity: '',
   });
 
-  console.log(ingredients);
-
-
   useEffect(() => {
     if (productionState.product_id.length > 2) {
       dispatch(fetchIngredients(productionState.product_id));
+      setHelperText('');
     }
   }, [dispatch, productionState.product_id]);
+
+  useEffect(() => {
+    dispatch(fetchMaterials());
+  }, [dispatch]);
 
   useEffect(() => {
     const now = new Date();
@@ -61,16 +67,72 @@ const ProductionForm: React.FC<Props> = ({
     }));
   }, []);
 
+  const checkMaterial = () => {
+    let isValid = true;
+    const materialMinusData: MinusMaterial[] = [];
+    let productsSum = 0;
+    const selectedQuantity = parseFloat(productionState.quantity);
+
+    ingredients.forEach((ingredient) => {
+      const material = materials.find((m) => m.id === ingredient.raw_material_id);
+      if (material) {
+        const requiredQuantity = parseFloat(ingredient.quantity) * selectedQuantity;
+
+        if (parseFloat(material.quantity) >= requiredQuantity) {
+          const materialAmount = parseFloat(material.amount) / parseFloat(material.quantity);
+          const amountToMinus = requiredQuantity * materialAmount;
+          materialMinusData.push({
+            id: material.id,
+            quantity: requiredQuantity.toString(),
+            amount: amountToMinus.toString(),
+          });
+          productsSum += amountToMinus;
+        } else {
+          isValid = false;
+          notValidMaterials.push(`We need ${material.name} ${requiredQuantity}, but only have ${material.quantity}.`);
+        }
+      }
+    });
+
+    return {
+      isValid,
+      materialMinusData,
+      productsSum: productsSum.toString(),
+      selectedQuantity: selectedQuantity.toString(),
+    };
+  };
+
+
   const onProductSalesSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    onSubmit(productionState);
-    setProductionState({
-      product_id: '',
-      production_date: '',
-      employee_id: '',
-      quantity: '',
-    });
+    const { isValid, materialMinusData, productsSum, selectedQuantity } = checkMaterial();
+
+    if (isValid) {
+      onSubmit(productionState, { materialsMinus: materialMinusData, productsSum, selectedQuantity });
+      setProductionState({
+        product_id: '',
+        production_date: '',
+        employee_id: '',
+        quantity: '',
+      });
+
+      setHelperText('');
+    } else {
+      let text: string = '';
+
+      notValidMaterials.forEach((item) => {
+        text += ' ';
+        text += item;
+      });
+
+      setHelperText(text);
+
+      setProductionState(prevState => ({
+        ...prevState,
+        quantity: '',
+      }));
+    }
   };
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,9 +151,20 @@ const ProductionForm: React.FC<Props> = ({
     }));
   };
 
+  let alertBlock: ReactElement<any, any> | null = null;
+
+  if (helperText.length > 0) {
+    alertBlock = (
+      <Alert severity="error" sx={{ margin: '10px 0' }}>
+        {helperText}
+      </Alert>
+    );
+  }
+
 
   return (
     <>
+      {alertBlock ? alertBlock : ''}
       <Grid container>
         <Grid item xs={6}>
           <Box
@@ -164,7 +237,7 @@ const ProductionForm: React.FC<Props> = ({
               type="submit"
               color="primary"
               variant="contained"
-              disabled={isLoading}
+              disabled={isLoading || parseFloat(productionState.quantity) < 0}
               loading={isLoading}
               loadingPosition="start"
               startIcon={<SaveIcon />}
@@ -178,13 +251,14 @@ const ProductionForm: React.FC<Props> = ({
               sx={{ mt: 1, ml: 1 }}
               component={Link}
               to="/production"
+              onClick={() => dispatch(clearIngredients())}
             >
               Back
             </Button>
           </Box>
         </Grid>
         <Grid item xs={6}>
-          {fetchIngredientsLoading && ingredients ? <CircularProgress/> : (
+          {fetchIngredientsLoading && ingredients ? <CircularProgress /> : (
             <TableContainer component={Paper}>
               <Table aria-label="simple table">
                 <TableHead>
@@ -198,7 +272,7 @@ const ProductionForm: React.FC<Props> = ({
                   {ingredients && ingredients.map((item, index) => (
                     <TableRow
                       key={item.id}
-                      sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
                         {index + 1}
@@ -217,7 +291,6 @@ const ProductionForm: React.FC<Props> = ({
           )}
         </Grid>
       </Grid>
-
     </>
   );
 };

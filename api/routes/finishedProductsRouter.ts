@@ -68,6 +68,19 @@ finishedProductRouter.put('/finished-product-minus', async (req, res, next) => {
   }
 });
 
+finishedProductRouter.put('/finished-product-plus', async (req, res, next) => {
+  try {
+    const { id, quantity, amount } = req.body;
+    const updatedUnits = await pool.query(
+      'UPDATE finished_products SET  quantity = quantity + $1, amount = amount + $2 WHERE id = $3 RETURNING *',
+      [quantity, amount, id],
+    );
+    res.send(updatedUnits.rows[0]);
+  } catch (e) {
+    next(e);
+  }
+});
+
 finishedProductRouter.delete(
   '/finished-product/:id',
   async (req, res, next) => {

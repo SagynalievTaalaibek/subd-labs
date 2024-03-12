@@ -10,6 +10,7 @@ import ingredientsRouter from './routes/ingredientsRouter';
 import budgetRouter from './routes/budgetRouter';
 import rawMaterialsPurchaseRouter from './routes/rawMaterialsPurchaseRouter';
 import productSalesRouter from './routes/productSalesRouter';
+import productionRouter from './routes/productionRouter';
 
 const app = express();
 const port = 8000;
@@ -26,6 +27,7 @@ app.use('/api', ingredientsRouter);
 app.use('/api', budgetRouter);
 app.use('/api', rawMaterialsPurchaseRouter);
 app.use('/api', productSalesRouter);
+app.use('/api', productionRouter);
 
 app.listen(port, () => {
   console.log(`Server start on ${port} port!`);

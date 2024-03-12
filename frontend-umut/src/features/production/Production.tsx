@@ -1,17 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { deleteProduction, fetchProduction } from './productionThunks';
-import { selectProductionDeleteLoading, selectProductions } from './productionSlice';
-import { selectFetchProductsLoading } from '../products/productsSlice';
+import { selectProductionDeleteLoading, selectProductionFetchLoading, selectProductions } from './productionSlice';
+import ProductionTable from './components/ProductionTable';
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
-import ProductionTable from './components/ProductionTable';
 
 const Production = () => {
   const dispatch = useAppDispatch();
   const productionsData = useAppSelector(selectProductions);
-  const fetchProductionLoading = useAppSelector(selectFetchProductsLoading);
+  const fetchProductionLoading = useAppSelector(selectProductionFetchLoading);
   const deleteProductionLoading = useAppSelector(selectProductionDeleteLoading);
 
   const [productSalesId, setProductSalesId] = useState<string | null>(null);
@@ -24,6 +23,10 @@ const Production = () => {
       setProductSalesId(null);
     }
   };
+
+  useEffect(() => {
+    dispatch(fetchProduction());
+  }, [dispatch]);
 
   const onDeleteCancel = () => {
     setProductSalesId(null);

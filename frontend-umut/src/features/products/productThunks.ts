@@ -89,3 +89,16 @@ export const productMinusUpdate = createAsyncThunk<void, ProductMinus>(
     await axiosApi.put('/finished-product-minus', updateMaterial);
   },
 );
+
+export const productPlusUpdate = createAsyncThunk<void, ProductMinus>(
+  'material/plus',
+  async (product) => {
+    const updateMaterial = {
+      id: product.id,
+      amount: product.amount,
+      quantity: product.quantity,
+    };
+
+    await axiosApi.put('/finished-product-plus', updateMaterial);
+  },
+);

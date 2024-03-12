@@ -32,8 +32,9 @@ export const productionSlice = createSlice({
 
     builder.addCase(fetchProduction.pending, (state) => {
       state.fetchProductionLoading = true;
-    }).addCase(fetchProduction.fulfilled, (state) => {
+    }).addCase(fetchProduction.fulfilled, (state, {payload}) => {
       state.fetchProductionLoading = false;
+      state.productions = payload;
     }).addCase(fetchProduction.rejected, (state) => {
       state.fetchProductionLoading = false;
     });

@@ -5,7 +5,7 @@ import {
   deleteIngredient,
   editIngredient,
   fetchIngredients,
-  fetchOneIngredient
+  fetchOneIngredient,
 } from './ingredientsThunks';
 import { IngredientI, IngredientMutation } from '../../types';
 
@@ -26,13 +26,17 @@ const initialState: IngredientsState = {
   fetchIngredientsLoading: false,
   fetchOneIngredientsLoading: false,
   editIngredientsLoading: false,
-  deleteIngredientsLoading: false
+  deleteIngredientsLoading: false,
 };
 
 export const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
-  reducers: {},
+  reducers: {
+    clearIngredients(state) {
+      state.ingredients = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(createIngredient.pending, (state) => {
       state.createIngredientsLoading = true;
@@ -44,7 +48,7 @@ export const ingredientsSlice = createSlice({
 
     builder.addCase(fetchIngredients.pending, (state) => {
       state.createIngredientsLoading = true;
-    }).addCase(fetchIngredients.fulfilled, (state, {payload}) => {
+    }).addCase(fetchIngredients.fulfilled, (state, { payload }) => {
       state.createIngredientsLoading = false;
       state.ingredients = payload;
     }).addCase(fetchIngredients.rejected, state => {
@@ -53,7 +57,7 @@ export const ingredientsSlice = createSlice({
 
     builder.addCase(fetchOneIngredient.pending, (state) => {
       state.fetchOneIngredientsLoading = true;
-    }).addCase(fetchOneIngredient.fulfilled, (state, {payload}) => {
+    }).addCase(fetchOneIngredient.fulfilled, (state, { payload }) => {
       state.fetchOneIngredientsLoading = false;
       state.oneIngredient = payload;
     }).addCase(fetchOneIngredient.rejected, state => {
@@ -68,17 +72,18 @@ export const ingredientsSlice = createSlice({
       state.editIngredientsLoading = false;
     });
 
-    builder.addCase(deleteIngredient.pending, (state, {meta}) => {
+    builder.addCase(deleteIngredient.pending, (state, { meta }) => {
       state.deleteIngredientsLoading = meta.arg;
     }).addCase(deleteIngredient.fulfilled, (state) => {
       state.deleteIngredientsLoading = false;
     }).addCase(deleteIngredient.rejected, (state) => {
       state.deleteIngredientsLoading = false;
     });
-  }
+  },
 });
 
 export const ingredientReducer = ingredientsSlice.reducer;
+export const {clearIngredients} = ingredientsSlice.actions;
 
 export const selectIngredients = (state: RootState) => state.ingredients.ingredients;
 export const selectOneIngredient = (state: RootState) => state.ingredients.oneIngredient;

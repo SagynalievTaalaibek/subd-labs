@@ -44,7 +44,7 @@ const ProductionTable: React.FC<Props> = ({ productionData, onDelete, deleteLoad
                 {index + 1}
               </TableCell>
               <TableCell component="th" scope="row">
-                {item.product_name}x
+                {item.product_name}
               </TableCell>
               <TableCell component="th" scope="row">
                 {item.employee_full_name}

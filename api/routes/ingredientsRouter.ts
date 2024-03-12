@@ -33,7 +33,7 @@ ingredientsRouter.get('/ingredients-by-fp/:id', async (req, res, next) => {
   try {
     const id = req.params.id;
     const ingredients = await pool.query(
-      'SELECT i.id, i.quantity, i.product_id, rm.name AS raw_material_name ' +
+      'SELECT i.id, i.quantity, i.product_id, i.raw_material_id, rm.name AS raw_material_name ' +
         'FROM ingredients i ' +
         'LEFT JOIN raw_materials rm ON rm.id = i.raw_material_id ' +
         'LEFT JOIN finished_products fp ON fp.id = i.product_id WHERE i.product_id = $1',
