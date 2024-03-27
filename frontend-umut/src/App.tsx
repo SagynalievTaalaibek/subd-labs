@@ -29,7 +29,8 @@ import NewProductSales from './features/productSales/NewProductSales';
 import NotFound from './components/NotFound';
 import Production from './features/production/Production';
 import NewProduction from './features/production/NewProduction';
-
+import Salary from './features/salary/Salary';
+import EditSalary from './features/salary/EditSalary';
 
 const App = () => {
   return (
@@ -57,15 +58,23 @@ const App = () => {
             <Route path="/materials/update/:id" element={<EditMaterials />} />
             <Route path="/ingredients" element={<Ingredients />} />
             <Route path="/ingredients/create" element={<NewIngredients />} />
-            <Route path="/ingredients/update/:id" element={<EditIngredient />} />
+            <Route
+              path="/ingredients/update/:id"
+              element={<EditIngredient />}
+            />
             <Route path="/budget" element={<Budget />} />
             <Route path="/budget/update/:id" element={<EditBudget />} />
             <Route path="/purchase" element={<RawMaterialPurchase />} />
-            <Route path="/purchase/create" element={<NewRawMaterialPurchase />} />
+            <Route
+              path="/purchase/create"
+              element={<NewRawMaterialPurchase />}
+            />
             <Route path="/product-sales" element={<ProductSales />} />
             <Route path="/product-sales/create" element={<NewProductSales />} />
             <Route path="/production" element={<Production />} />
             <Route path="/production/create" element={<NewProduction />} />
+            <Route path="/salary" element={<Salary />} />
+            <Route path="/salary/update/:id" element={<EditSalary />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Container>

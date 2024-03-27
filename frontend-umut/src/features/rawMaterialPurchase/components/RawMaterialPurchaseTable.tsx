@@ -20,66 +20,68 @@ interface Props {
   deleteLoading: boolean | string;
 }
 
-const RawMaterialPurchaseTable: React.FC<Props> = ({rawMaterialsPurchase, onDelete, deleteLoading}) => {
+const RawMaterialPurchaseTable: React.FC<Props> = ({ rawMaterialsPurchase, onDelete, deleteLoading }) => {
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{minWidth: 650}} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="left">ID</TableCell>
-            <TableCell align="left">Material</TableCell>
-            <TableCell align="left">Employee Name</TableCell>
-            <TableCell align="left">Date</TableCell>
-            <TableCell align="left">Quantity</TableCell>
-            <TableCell align="left">Amount</TableCell>
-            <TableCell align="left">Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rawMaterialsPurchase && rawMaterialsPurchase.map((item, index) => (
-            <TableRow
-              key={item.id}
-              sx={{'&:last-child td, &:last-child th': {border: 0}}}
-            >
-              <TableCell component="th" scope="row">
-                {index + 1}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {item.raw_material_name}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {item.employee_full_name}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {dayjs(item.purchase_date).format('LL')}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {item.quantity}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {item.amount}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                <Grid container spacing={2} alignContent="center">
-                  <Grid item>
-                    <LoadingButton
-                      type="submit"
-                      color="error"
-                      variant="contained"
-                      disabled={deleteLoading ? deleteLoading === item.id : false}
-                      loading={deleteLoading === item.id}
-                      onClick={() => onDelete(item.id)}
-                    >
-                      Delete
-                    </LoadingButton>
-                  </Grid>
-                </Grid>
-              </TableCell>
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: '700px' }}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">ID</TableCell>
+              <TableCell align="left">Material</TableCell>
+              <TableCell align="left">Employee Name</TableCell>
+              <TableCell align="left">Date</TableCell>
+              <TableCell align="left">Quantity</TableCell>
+              <TableCell align="left">Amount</TableCell>
+              <TableCell align="left">Action</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {rawMaterialsPurchase && rawMaterialsPurchase.map((item, index) => (
+              <TableRow
+                key={item.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {index + 1}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {item.raw_material_name}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {item.employee_full_name}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {dayjs(item.purchase_date).format('LL')}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {item.quantity}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {item.amount}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  <Grid container spacing={2} alignContent="center">
+                    <Grid item>
+                      <LoadingButton
+                        type="submit"
+                        color="error"
+                        variant="contained"
+                        disabled={deleteLoading ? deleteLoading === item.id : false}
+                        loading={deleteLoading === item.id}
+                        onClick={() => onDelete(item.id)}
+                      >
+                        Delete
+                      </LoadingButton>
+                    </Grid>
+                  </Grid>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 };
 

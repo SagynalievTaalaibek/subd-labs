@@ -21,7 +21,6 @@ export interface EmployeesWithID {
   phone: string;
 }
 
-
 export interface EmployeeMutation {
   full_name: string;
   position_id: string;
@@ -116,37 +115,37 @@ export interface BudgetMutation {
 }
 
 export interface RawMaterialPurchaseI {
-  id: string,
-  employee_full_name: string,
-  raw_material_name: string,
-  purchase_date: string,
-  quantity: string,
-  amount: string,
+  id: string;
+  employee_full_name: string;
+  raw_material_name: string;
+  purchase_date: string;
+  quantity: string;
+  amount: string;
 }
 
 export interface RawMaterialPurchaseMutation {
-  raw_material_id: string,
-  employee_id: string,
-  purchase_date: string,
-  quantity: string,
-  amount: string,
+  raw_material_id: string;
+  employee_id: string;
+  purchase_date: string;
+  quantity: string;
+  amount: string;
 }
 
 export interface ProductSalesI {
-  id: string,
-  employee_full_name: string,
-  product_name: string,
-  sale_date: string,
-  quantity: string,
-  amount: string,
+  id: string;
+  employee_full_name: string;
+  product_name: string;
+  sale_date: string;
+  quantity: string;
+  amount: string;
 }
 
 export interface ProductSalesMutation {
-  employee_id: string,
-  product_id: string,
-  sale_date: string,
-  quantity: string,
-  amount: string,
+  employee_id: string;
+  product_id: string;
+  sale_date: string;
+  quantity: string;
+  amount: string;
 }
 
 export interface ProductionI {
@@ -154,14 +153,14 @@ export interface ProductionI {
   product_name: string;
   quantity: string;
   production_date: string;
-  employee_full_name: string,
+  employee_full_name: string;
 }
 
 export interface ProductionMutation {
   product_id: string;
   quantity: string;
   production_date: string;
-  employee_id: string
+  employee_id: string;
 }
 
 export interface MinusMaterial {
@@ -171,9 +170,24 @@ export interface MinusMaterial {
 }
 
 export interface ProductionSendData {
-  materialsMinus: MinusMaterial[],
+  materialsMinus: MinusMaterial[];
   productsSum: string;
   selectedQuantity: string;
 }
 
 // salary
+
+export interface SalaryI {
+  id: string;
+  full_name: string;
+  year: number;
+  month: number;
+  purchase_count: number;
+  production_count: number;
+  sales_count: number;
+  common_count: number;
+  salary: string;
+  bonus: string;
+  general: string;
+  issued: boolean;
+}

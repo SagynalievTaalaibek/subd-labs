@@ -9,6 +9,7 @@ import { budgetReducer } from '../features/budget/budgetSlice';
 import { rawMaterialPurchaseReducer } from '../features/rawMaterialPurchase/purchaseSlice';
 import { productSalesReducer } from '../features/productSales/productSalesSlice';
 import { productionReducer } from '../features/production/productionSlice';
+import { salaryReducer } from '../features/salary/salarySlice';
 
 export const store = configureStore({
   reducer: {
@@ -22,7 +23,8 @@ export const store = configureStore({
     rawMaterialPurchase: rawMaterialPurchaseReducer,
     productSales: productSalesReducer,
     production: productionReducer,
-  }
+    salary: salaryReducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
