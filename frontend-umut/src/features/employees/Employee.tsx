@@ -5,9 +5,16 @@ import { deleteEmployees, fetchEmployees } from './employeeThunks';
 import {
   selectDeleteEmployeeLoading,
   selectEmployees,
-  selectFetchEmployeeLoading
+  selectFetchEmployeeLoading,
 } from './employeeSlice';
-import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
+import {
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import EmployeeTable from './components/EmployeeTable';
 
@@ -24,8 +31,8 @@ const Employee = () => {
 
   const onDeleteConfirm = async () => {
     if (deleteId) {
-      dispatch(deleteEmployees(deleteId));
-      await dispatch(fetchEmployees());
+      await dispatch(deleteEmployees(deleteId));
+      dispatch(fetchEmployees());
       setDeleteId(null);
     }
   };
@@ -41,11 +48,19 @@ const Employee = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Button variant="contained" component={Link} to="/employees/create">Create employee</Button>
+        <Button variant="contained" component={Link} to="/employees/create">
+          Create employee
+        </Button>
       </Grid>
       <Grid item>
-        {fetchLoading ? <CircularProgress/> : (
-          <EmployeeTable employees={employees} deleteLoading={deleteLoading} onDelete={onPositionDelete}/>
+        {fetchLoading ? (
+          <CircularProgress />
+        ) : (
+          <EmployeeTable
+            employees={employees}
+            deleteLoading={deleteLoading}
+            onDelete={onPositionDelete}
+          />
         )}
       </Grid>
       <Dialog open={Boolean(deleteId)} onClose={onDeleteCancel}>

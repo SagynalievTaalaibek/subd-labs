@@ -2,9 +2,20 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { deleteProduction, fetchProduction } from './productionThunks';
-import { selectProductionDeleteLoading, selectProductionFetchLoading, selectProductions } from './productionSlice';
+import {
+  selectProductionDeleteLoading,
+  selectProductionFetchLoading,
+  selectProductions,
+} from './productionSlice';
 import ProductionTable from './components/ProductionTable';
-import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
+import {
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 
 const Production = () => {
@@ -15,11 +26,10 @@ const Production = () => {
 
   const [productSalesId, setProductSalesId] = useState<string | null>(null);
 
-
   const onDeleteConfirm = async () => {
     if (productSalesId) {
       await dispatch(deleteProduction(productSalesId));
-      await dispatch(fetchProduction());
+      dispatch(fetchProduction());
       setProductSalesId(null);
     }
   };
@@ -39,10 +49,14 @@ const Production = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Button variant="contained" component={Link} to="/production/create">New Production</Button>
+        <Button variant="contained" component={Link} to="/production/create">
+          New Production
+        </Button>
       </Grid>
       <Grid item>
-        {fetchProductionLoading ? <CircularProgress /> : (
+        {fetchProductionLoading ? (
+          <CircularProgress />
+        ) : (
           <ProductionTable
             productionData={productionsData}
             deleteLoading={deleteProductionLoading}

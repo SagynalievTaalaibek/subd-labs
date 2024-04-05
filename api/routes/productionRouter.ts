@@ -3,8 +3,7 @@ import pool from '../db';
 
 const productionRouter = express.Router();
 
-
-productionRouter.post('/production', async (req, res, next) => {
+/*productionRouter.post('/production', async (req, res, next) => {
   try {
     const { product_id, production_date, quantity, employee_id } = req.body;
     const newProduction = await pool.query(
@@ -16,9 +15,32 @@ productionRouter.post('/production', async (req, res, next) => {
     console.error('Error creating production:', error);
     next(error);
   }
+});*/
+
+productionRouter.post('/production', async (req, res, next) => {
+  try {
+    const { product_id, production_date, quantity, employee_id } = req.body;
+    const result = await pool.query(
+      'CALL create_production($1, $2, $3, $4, $5)',
+      [product_id, quantity, production_date, employee_id, null],
+    );
+
+    // Получаем значение результата вызова процедуры
+    const resultCode = result.rows[0].result;
+    console.log(resultCode);
+    // В зависимости от значения результата выполняем соответствующие действия
+    if (resultCode === 1) {
+      res.send('Производство успешно создано');
+    } else {
+      res.status(400).send('Недостаточно материалов для производства');
+    }
+  } catch (error) {
+    console.error('Error creating production:', error);
+    next(error);
+  }
 });
 
-productionRouter.get('/production', async (_req, res, next) => {
+/*productionRouter.get('/production', async (_req, res, next) => {
   try {
     const productionData = await pool.query(
       'SELECT p.id, p.quantity, p.production_date, e.full_name as employee_full_name, fp.name as product_name FROM production p ' +
@@ -29,9 +51,18 @@ productionRouter.get('/production', async (_req, res, next) => {
   } catch (e) {
     next(e);
   }
+});*/
+
+productionRouter.get('/production', async (_req, res, next) => {
+  try {
+    const productionData = await pool.query('SELECT * FROM get_productions()');
+    res.send(productionData.rows);
+  } catch (e) {
+    next(e);
+  }
 });
 
-productionRouter.delete('/production/:id', async (req, res, next) => {
+/*productionRouter.delete('/production/:id', async (req, res, next) => {
   try {
     const id = req.params.id;
     await pool.query('DELETE FROM production where id = $1', [id]);
@@ -41,6 +72,21 @@ productionRouter.delete('/production/:id', async (req, res, next) => {
       .status(400)
       .send(
         'Cannot delete Production deleted because it is referenced in another table.',
+      );
+    next(error);
+  }
+});*/
+
+productionRouter.delete('/production/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    await pool.query('CALL delete_production($1)', [id]);
+    res.send('Production deleted successfully id = ' + id);
+  } catch (error) {
+    res
+      .status(400)
+      .send(
+        'Cannot delete Production because it is referenced in another table.',
       );
     next(error);
   }

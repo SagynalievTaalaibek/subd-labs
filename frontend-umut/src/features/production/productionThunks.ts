@@ -5,14 +5,24 @@ import { ProductionI, ProductionMutation } from '../../types';
 export const creteProduction = createAsyncThunk<void, ProductionMutation>(
   'production/create',
   async (productionData) => {
-    const newProduction: ProductionMutation = {
-      product_id: productionData.product_id,
-      employee_id: productionData.employee_id,
-      production_date: productionData.production_date,
-      quantity: productionData.quantity,
-    };
+    try {
+      const newProduction: ProductionMutation = {
+        product_id: productionData.product_id,
+        employee_id: productionData.employee_id,
+        production_date: productionData.production_date,
+        quantity: productionData.quantity,
+      };
 
-    await axiosApi.post('/production', newProduction);
+      await axiosApi.post('/production', newProduction);
+    } catch (error: any) {
+      if (error.response.status === 500) {
+        console.error('Internal Server Error:', error.message);
+      } else if (error.response.status === 400) {
+        alert('We don not have enough material!');
+      }
+
+      throw error;
+    }
   },
 );
 

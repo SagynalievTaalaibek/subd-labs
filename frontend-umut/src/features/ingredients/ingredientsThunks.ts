@@ -1,6 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import { IngredientI, IngredientMutation, IngredientsWithID } from '../../types';
+import {
+  IngredientI,
+  IngredientMutation,
+  IngredientsWithID,
+} from '../../types';
 
 export const createIngredient = createAsyncThunk<void, IngredientMutation>(
   'ingredient/create',
@@ -20,15 +24,17 @@ export const createIngredient = createAsyncThunk<void, IngredientMutation>(
         alert('This raw-materials is using with this Product!');
       }
     }
-  }
+  },
 );
 
 export const fetchIngredients = createAsyncThunk<IngredientI[], string>(
   'ingredient/fetchAll',
   async (id) => {
-    const response = await axiosApi.get<IngredientI[]>(`/ingredients-by-fp/${id}`);
+    const response = await axiosApi.get<IngredientI[]>(
+      `/ingredients-by-fp/${id}`,
+    );
     return response.data;
-  }
+  },
 );
 
 export const deleteIngredient = createAsyncThunk<void, string>(
@@ -41,7 +47,6 @@ export const deleteIngredient = createAsyncThunk<void, string>(
     }
   },
 );
-
 
 export const editIngredient = createAsyncThunk<void, IngredientsWithID>(
   'ingredient/edit',
@@ -68,7 +73,9 @@ export const editIngredient = createAsyncThunk<void, IngredientsWithID>(
 export const fetchOneIngredient = createAsyncThunk<IngredientMutation, string>(
   'ingredient/fetchOne',
   async (id) => {
-    const response = await axiosApi.get<IngredientsWithID>(`/ingredients/${id}`);
+    const response = await axiosApi.get<IngredientsWithID>(
+      `/ingredients/${id}`,
+    );
     const oneIngredient = response.data;
 
     const IngredientMutation: IngredientMutation = {
