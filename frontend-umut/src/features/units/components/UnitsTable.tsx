@@ -8,9 +8,9 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import { Grid } from '@mui/material';
-import Button from '@mui/material/Button';
-import { LoadingButton } from '@mui/lab';
 import { UnitsI } from '../../../types';
+import IconButton from '@mui/material/IconButton';
+import { Delete, Edit } from '@mui/icons-material';
 
 interface Props {
   units: UnitsI[] | undefined;
@@ -18,55 +18,55 @@ interface Props {
   deleteLoading: boolean | string;
 }
 
-const UnitsTable: React.FC<Props> = ({units, onDelete, deleteLoading}) => {
+const UnitsTable: React.FC<Props> = ({ units, onDelete, deleteLoading }) => {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{minWidth: 650}} aria-label="simple table">
+      <Table sx={{ minWidth: 400 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="left">ID</TableCell>
             <TableCell align="left">Units of measure</TableCell>
-            <TableCell align="left">Action</TableCell>
+            <TableCell align="center">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {units && units.map((item, index) => (
-            <TableRow
-              key={item.id}
-              sx={{'&:last-child td, &:last-child th': {border: 0}}}
-            >
-              <TableCell component="th" scope="row">
-                {index + 1}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {item.name}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                <Grid container spacing={2} alignContent="center">
-                  <Grid item>
-                    <Button
-                      component={Link} variant="contained"
-                      to={'/units/update/' + item.id}
-                    >
-                      Update
-                    </Button>
+          {units &&
+            units.map((item, index) => (
+              <TableRow
+                key={item.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {index + 1}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {item.name}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  <Grid container spacing={2} alignContent="center">
+                    <Grid item xs>
+                      <IconButton
+                        component={Link}
+                        to={'/units/update/' + item.id}
+                      >
+                        <Edit />
+                      </IconButton>
+                    </Grid>
+                    <Grid item xs>
+                      <IconButton
+                        type="submit"
+                        disabled={
+                          deleteLoading ? deleteLoading === item.id : false
+                        }
+                        onClick={() => onDelete(item.id)}
+                      >
+                        <Delete color="error" />
+                      </IconButton>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <LoadingButton
-                      type="submit"
-                      color="error"
-                      variant="contained"
-                      disabled={deleteLoading ? deleteLoading === item.id : false}
-                      loading={deleteLoading === item.id}
-                      onClick={() => onDelete(item.id)}
-                    >
-                      Delete
-                    </LoadingButton>
-                  </Grid>
-                </Grid>
-              </TableCell>
-            </TableRow>
-          ))}
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

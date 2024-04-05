@@ -7,9 +7,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, Grid } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { Grid } from '@mui/material';
 import { FinishedProductI } from '../../../types';
+import IconButton from '@mui/material/IconButton';
+import { Delete, Edit } from '@mui/icons-material';
 
 interface Props {
   products: FinishedProductI[];
@@ -17,10 +18,14 @@ interface Props {
   deleteLoading: boolean | string;
 }
 
-const FinishedProductTable: React.FC<Props> = ({products, onDelete, deleteLoading}) => {
+const FinishedProductTable: React.FC<Props> = ({
+  products,
+  onDelete,
+  deleteLoading,
+}) => {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{minWidth: 650}} aria-label="simple table">
+      <Table sx={{ minWidth: 650 }} aria-label="customized table">
         <TableHead>
           <TableRow>
             <TableCell align="left">ID</TableCell>
@@ -28,14 +33,14 @@ const FinishedProductTable: React.FC<Props> = ({products, onDelete, deleteLoadin
             <TableCell align="left">Units od measure</TableCell>
             <TableCell align="left">Quantity</TableCell>
             <TableCell align="left">Amount</TableCell>
-            <TableCell align="left">Action</TableCell>
+            <TableCell align="center">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {products.map((item, index) => (
             <TableRow
               key={item.id}
-              sx={{'&:last-child td, &:last-child th': {border: 0}}}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 {index + 1}
@@ -54,25 +59,24 @@ const FinishedProductTable: React.FC<Props> = ({products, onDelete, deleteLoadin
               </TableCell>
               <TableCell component="th" scope="row">
                 <Grid container spacing={2} alignContent="center">
-                  <Grid item>
-                    <Button
-                      component={Link} variant="contained"
+                  <Grid item xs>
+                    <IconButton
+                      component={Link}
                       to={'/products/update/' + item.id}
                     >
-                      Update
-                    </Button>
+                      <Edit />
+                    </IconButton>
                   </Grid>
-                  <Grid item>
-                    <LoadingButton
+                  <Grid item xs>
+                    <IconButton
                       type="submit"
-                      color="error"
-                      variant="contained"
-                      disabled={deleteLoading ? deleteLoading === item.id : false}
-                      loading={deleteLoading === item.id}
+                      disabled={
+                        deleteLoading ? deleteLoading === item.id : false
+                      }
                       onClick={() => onDelete(item.id)}
                     >
-                      Delete
-                    </LoadingButton>
+                      <Delete color="error" />
+                    </IconButton>
                   </Grid>
                 </Grid>
               </TableCell>

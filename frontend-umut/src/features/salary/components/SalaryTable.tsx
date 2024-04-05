@@ -8,8 +8,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
-import { Button } from '@mui/material';
 import { SalaryI } from '../../../types';
+import IconButton from '@mui/material/IconButton';
+import { Edit } from '@mui/icons-material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -34,6 +35,12 @@ interface Props {
   salaryData: SalaryI[];
   status: boolean;
 }
+
+const StyledIconEdit = styled(Edit)`
+  &:hover {
+    color: #76ff03;
+  }
+`;
 
 const SalaryTable: React.FC<Props> = ({ salaryData, status }) => {
   return (
@@ -85,14 +92,9 @@ const SalaryTable: React.FC<Props> = ({ salaryData, status }) => {
               </StyledTableCell>
               {status && (
                 <StyledTableCell align="center">
-                  <Button
-                    component={Link}
-                    variant="contained"
-                    to={`/salary/update/${item.id}`}
-                    sx={{ backgroundColor: '#7a6664' }}
-                  >
-                    Update
-                  </Button>
+                  <IconButton component={Link} to={`/salary/update/${item.id}`}>
+                    <StyledIconEdit />
+                  </IconButton>
                 </StyledTableCell>
               )}
             </StyledTableRow>

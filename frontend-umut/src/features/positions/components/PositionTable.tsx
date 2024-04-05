@@ -7,9 +7,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, Grid } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { Grid } from '@mui/material';
 import { PositionI } from '../../../types';
+import IconButton from '@mui/material/IconButton';
+import { Delete, Edit } from '@mui/icons-material';
 
 interface Props {
   position: PositionI[];
@@ -17,22 +18,26 @@ interface Props {
   deleteLoading: boolean | string;
 }
 
-const PositionTable: React.FC<Props> = ({position, onDelete, deleteLoading}) => {
+const PositionTable: React.FC<Props> = ({
+  position,
+  onDelete,
+  deleteLoading,
+}) => {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{minWidth: 650}} aria-label="simple table">
+      <Table sx={{ minWidth: 400 }} aria-label="customized table">
         <TableHead>
           <TableRow>
             <TableCell align="left">ID</TableCell>
             <TableCell align="left">Position</TableCell>
-            <TableCell align="left">Action</TableCell>
+            <TableCell align="center">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {position.map((item, index) => (
             <TableRow
               key={item.position_id}
-              sx={{'&:last-child td, &:last-child th': {border: 0}}}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 {index + 1}
@@ -42,26 +47,26 @@ const PositionTable: React.FC<Props> = ({position, onDelete, deleteLoading}) => 
               </TableCell>
               <TableCell component="th" scope="row">
                 <Grid container spacing={2} alignContent="center">
-                  <Grid item>
-                    <Button
+                  <Grid item xs>
+                    <IconButton
                       component={Link}
-                      variant="contained"
                       to={'/positions/update/' + item.position_id}
                     >
-                      Update
-                    </Button>
+                      <Edit />
+                    </IconButton>
                   </Grid>
-                  <Grid item>
-                    <LoadingButton
+                  <Grid item xs>
+                    <IconButton
                       type="submit"
-                      color="error"
-                      variant="contained"
-                      disabled={deleteLoading ? deleteLoading === item.position_id : false}
-                      loading={deleteLoading === item.position_id}
+                      disabled={
+                        deleteLoading
+                          ? deleteLoading === item.position_id
+                          : false
+                      }
                       onClick={() => onDelete(item.position_id)}
                     >
-                      Delete
-                    </LoadingButton>
+                      <Delete color="error" />
+                    </IconButton>
                   </Grid>
                 </Grid>
               </TableCell>

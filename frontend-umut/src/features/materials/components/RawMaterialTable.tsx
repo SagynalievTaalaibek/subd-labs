@@ -7,9 +7,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, Grid } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { Grid } from '@mui/material';
 import { RawMaterialI } from '../../../types';
+import IconButton from '@mui/material/IconButton';
+import { Delete, Edit } from '@mui/icons-material';
 
 interface Props {
   materials: RawMaterialI[];
@@ -17,7 +18,11 @@ interface Props {
   deleteLoading: boolean | string;
 }
 
-const RawMaterialTable: React.FC<Props> = ({ materials, onDelete, deleteLoading }) => {
+const RawMaterialTable: React.FC<Props> = ({
+  materials,
+  onDelete,
+  deleteLoading,
+}) => {
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: '700px' }}>
@@ -33,51 +38,52 @@ const RawMaterialTable: React.FC<Props> = ({ materials, onDelete, deleteLoading 
             </TableRow>
           </TableHead>
           <TableBody>
-            {materials && materials.map((item, index) => (
-              <TableRow
-                key={item.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {index + 1}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {item.name}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {item.units_of_measure_name}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {item.quantity}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {item.amount}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  <Grid container spacing={2} alignContent="center">
-                    <Grid item>
-                      <Button
-                        component={Link} variant="contained"
-                        to={'/materials/update/' + item.id}
-                      >
-                        Update</Button>
+            {materials &&
+              materials.map((item, index) => (
+                <TableRow
+                  key={item.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {item.name}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {item.units_of_measure_name}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {item.quantity}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {item.amount}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    <Grid container spacing={2} alignContent="center">
+                      <Grid item xs>
+                        <IconButton
+                          component={Link}
+                          to={'/materials/update/' + item.id}
+                        >
+                          <Edit />
+                        </IconButton>
+                      </Grid>
+                      <Grid item xs>
+                        <IconButton
+                          type="submit"
+                          disabled={
+                            deleteLoading ? deleteLoading === item.id : false
+                          }
+                          onClick={() => onDelete(item.id)}
+                        >
+                          <Delete color="error" />
+                        </IconButton>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <LoadingButton
-                        type="submit"
-                        color="error"
-                        variant="contained"
-                        disabled={deleteLoading ? deleteLoading === item.id : false}
-                        loading={deleteLoading === item.id}
-                        onClick={() => onDelete(item.id)}
-                      >
-                        Delete
-                      </LoadingButton>
-                    </Grid>
-                  </Grid>
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
