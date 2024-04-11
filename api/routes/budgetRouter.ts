@@ -37,6 +37,7 @@ budgetRouter.put('/budget-add', async (req, res, next) => {
     next(e);
   }
 });
+
 budgetRouter.put('/budget-minus', async (req, res, next) => {
   try {
     const { id, budget_amount } = req.body;

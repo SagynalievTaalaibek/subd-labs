@@ -19,10 +19,14 @@ import {
   selectUpdateData,
   updateDataReducer,
 } from './salarySlice';
-import { fetchSalary, fetchUpdateSalary, issueSalary } from './salaryThunks';
+import {
+  fetchSalary,
+  fetchUpdateSalary,
+  updateSalaryIssuedBudget,
+} from './salaryThunks';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { selectBudget } from '../budget/budgetSlice';
-import { fetchBudget, minusSumBudget } from '../budget/budgetThunks';
+import { fetchBudget } from '../budget/budgetThunks';
 import { LoadingButton } from '@mui/lab';
 import { Paid } from '@mui/icons-material';
 
@@ -67,14 +71,23 @@ const Salary = () => {
 
   const onIssue = async () => {
     if (budgetData && parseFloat(budgetData.budget_amount) >= generalSum) {
-      await dispatch(
+      /*await dispatch(
         minusSumBudget({
           id: BUDGET_ID,
           budget_amount: generalSum.toString(),
         }),
       );
 
-      await dispatch(issueSalary({ year, month }));
+      await dispatch(issueSalary({ year, month }));*/
+
+      await dispatch(
+        updateSalaryIssuedBudget({
+          yearNumber: year,
+          monthNumber: month,
+          budgetId: BUDGET_ID,
+          budgetAmountUpdate: generalSum.toString(),
+        }),
+      );
       await dispatch(fetchSalary({ year, month }));
 
       await dispatch(fetchBudget());

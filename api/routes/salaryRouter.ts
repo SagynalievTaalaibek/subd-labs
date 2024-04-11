@@ -1,10 +1,9 @@
 import express from 'express';
 import pool from '../db';
-import { EmployeeSalaryTable, SalaryI } from '../types';
 
 const salaryRouter = express.Router();
 
-const fetchCountsForEmployee = async (
+/*const fetchCountsForEmployee = async (
   employeeData: EmployeeSalaryTable,
   yearNumber: number,
   monthNumber: number,
@@ -210,26 +209,60 @@ salaryRouter.get('/salary', async (req, res, next) => {
     console.error("Error in salaryRouter.get('/salary'):", e);
     next(e);
   }
-});
+});*/
 
-salaryRouter.get('/salary/update', async (req, res, next) => {
+salaryRouter.get('/salary', async (req, res, next) => {
   try {
     const { year, month } = req.query;
     const yearNumber = parseInt(year as string, 10);
     const monthNumber = parseInt(month as string, 10);
 
-    const updatedData = await pool.query(
-      'SELECT id, e.full_name , year, month, production_count, purchase_count, sales_count, common_count, salary.salary, bonus, general, issued FROM salary LEFT JOIN public.employees e on e.employee_id = salary.employee_id  WHERE year = $1 AND month = $2',
+    const result = await pool.query(
+      'SELECT * FROM  calculate_and_update_salary($1, $2)',
       [yearNumber, monthNumber],
     );
 
-    return res.send(updatedData.rows);
+    res.send(result.rows);
   } catch (e) {
+    console.error("Error in salaryRouter.get('/salary'):", e);
     next(e);
   }
 });
 
-salaryRouter.patch('/salary', async (req, res, next) => {
+salaryRouter.put('/salary/update_issued_budget', async (req, res, next) => {
+  try {
+    const { budgetId, budgetAmountUpdate, yearNumber, monthNumber } = req.body;
+
+    await pool.query('CALL update_salary_issued_and_budget($1, $2, $3, $4)', [
+      budgetId,
+      budgetAmountUpdate,
+      yearNumber,
+      monthNumber,
+    ]);
+
+    res
+      .status(200)
+      .json({ message: 'Salary and budget updated successfully.' });
+  } catch (error) {
+    console.error('Error updating salary and budget:', error);
+    next(error);
+  }
+});
+
+salaryRouter.put('/salary', async (req, res, next) => {
+  try {
+    const { id, general } = req.body;
+
+    await pool.query('CALL update_salary_general($1, $2)', [id, general]);
+
+    res.status(200).json({ message: 'Salary general updated successfully.' });
+  } catch (error) {
+    console.error('Error updating salary general:', error);
+    next(error);
+  }
+});
+
+/*salaryRouter.patch('/salary', async (req, res, next) => {
   try {
     const { year, month } = req.body;
     const yearNumber = parseInt(year, 10);
@@ -250,9 +283,9 @@ salaryRouter.patch('/salary', async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+});*/
 
-salaryRouter.put('/salary', async (req, res, next) => {
+/*salaryRouter.put('/salary', async (req, res, next) => {
   try {
     const { id, general } = req.body;
     const updatedSalary = await pool.query(
@@ -264,17 +297,38 @@ salaryRouter.put('/salary', async (req, res, next) => {
   } catch (e) {
     next(e);
   }
+});*/
+
+salaryRouter.get('/salary/update', async (req, res, next) => {
+  try {
+    const { year, month } = req.query;
+    const yearNumber = parseInt(year as string, 10);
+    const monthNumber = parseInt(month as string, 10);
+
+    const updatedData = await pool.query(
+      'SELECT id, e.full_name , year, month, production_count, purchase_count, sales_count, common_count, salary.salary, bonus, general, issued FROM salary LEFT JOIN public.employees e on e.employee_id = salary.employee_id  WHERE year = $1 AND month = $2',
+      [yearNumber, monthNumber],
+    );
+
+    return res.send(updatedData.rows);
+  } catch (e) {
+    next(e);
+  }
 });
 
 salaryRouter.get('/salary/:id', async (req, res, next) => {
   try {
     const id = req.params.id;
-    const salaryData = await pool.query(
+    /*const salaryData = await pool.query(
       'SELECT id, e.full_name , year, month, production_count, purchase_count, sales_count, common_count, salary.salary, bonus, general, issued ' +
         'FROM salary ' +
         'LEFT JOIN public.employees e on e.employee_id = salary.employee_id where id = $1',
       [id],
-    );
+    );*/
+
+    const salaryData = await pool.query('SELECT * FROM get_salary_by_id($1)', [
+      id,
+    ]);
     res.send(salaryData.rows[0]);
   } catch (e) {
     next(e);

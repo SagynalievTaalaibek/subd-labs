@@ -6,6 +6,7 @@ import {
   fetchUpdateSalary,
   issueSalary,
   updateSalary,
+  updateSalaryIssuedBudget,
 } from './salaryThunks';
 import { SalaryI } from '../../types';
 
@@ -85,6 +86,17 @@ const salarySlice = createSlice({
         state.updateSalary = false;
       })
       .addCase(updateSalary.rejected, (state) => {
+        state.updateSalary = false;
+      });
+
+    builder
+      .addCase(updateSalaryIssuedBudget.pending, (state) => {
+        state.updateSalary = true;
+      })
+      .addCase(updateSalaryIssuedBudget.fulfilled, (state) => {
+        state.updateSalary = false;
+      })
+      .addCase(updateSalaryIssuedBudget.rejected, (state) => {
         state.updateSalary = false;
       });
 

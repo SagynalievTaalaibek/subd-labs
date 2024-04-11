@@ -56,3 +56,17 @@ export const fetchUpdateSalary = createAsyncThunk<SalaryI[], DataYear>(
     return response.data;
   },
 );
+
+interface UpdateIssuedBudget {
+  budgetId: string;
+  budgetAmountUpdate: string;
+  yearNumber: string;
+  monthNumber: string;
+}
+
+export const updateSalaryIssuedBudget = createAsyncThunk<
+  void,
+  UpdateIssuedBudget
+>('salary/updateSalaryIssuedBudget', async (dataUpdate) => {
+  await axiosApi.put('/salary/update_issued_budget', dataUpdate);
+});
