@@ -10,6 +10,8 @@ import { rawMaterialPurchaseReducer } from '../features/rawMaterialPurchase/purc
 import { productSalesReducer } from '../features/productSales/productSalesSlice';
 import { productionReducer } from '../features/production/productionSlice';
 import { salaryReducer } from '../features/salary/salarySlice';
+import { creditReducer } from '../features/payment/paymentSlice';
+import { bankReducer } from '../features/bank/bankSlice';
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +26,8 @@ export const store = configureStore({
     productSales: productSalesReducer,
     production: productionReducer,
     salary: salaryReducer,
+    bank: bankReducer,
+    credit: creditReducer,
   },
 });
 

@@ -11,6 +11,9 @@ import { Grid } from '@mui/material';
 import { RawMaterialI } from '../../../types';
 import IconButton from '@mui/material/IconButton';
 import { Delete, Edit } from '@mui/icons-material';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import dayjs from 'dayjs';
+dayjs.extend(LocalizedFormat);
 
 interface Props {
   materials: RawMaterialI[];

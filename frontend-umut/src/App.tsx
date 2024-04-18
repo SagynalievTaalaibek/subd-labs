@@ -31,6 +31,10 @@ import Production from './features/production/Production';
 import NewProduction from './features/production/NewProduction';
 import Salary from './features/salary/Salary';
 import EditSalary from './features/salary/EditSalary';
+import Bank from './features/bank/Bank';
+import NewCredit from './features/bank/NewCredit';
+import PaymentItem from './features/payment/PaymentItem';
+import PaymentList from './features/payment/PaymentList';
 
 const App = () => {
   return (
@@ -75,6 +79,10 @@ const App = () => {
             <Route path="/production/create" element={<NewProduction />} />
             <Route path="/salary" element={<Salary />} />
             <Route path="/salary/update/:id" element={<EditSalary />} />
+            <Route path="/bank" element={<Bank/>} />
+            <Route path="/bank/pay/:id" element={<PaymentItem/>} />
+            <Route path="/bank/history/:id" element={<PaymentList/>} />
+            <Route path="/bank/create" element={<NewCredit/>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Container>

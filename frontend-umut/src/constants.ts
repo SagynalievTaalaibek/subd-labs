@@ -11,6 +11,7 @@ export const pages = [
   'Product-Sales',
   'Production',
   'Salary',
+  'Bank',
 ];
 
 export const BUDGET_ID = '7487f33c-e7a5-4a11-9abd-3ae187a6899d';

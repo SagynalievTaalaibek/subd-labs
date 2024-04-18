@@ -12,6 +12,7 @@ import rawMaterialsPurchaseRouter from './routes/rawMaterialsPurchaseRouter';
 import productSalesRouter from './routes/productSalesRouter';
 import productionRouter from './routes/productionRouter';
 import salaryRouter from './routes/salaryRouter';
+import bankRouter from './routes/bankRouter';
 
 const app = express();
 const port = 8000;
@@ -30,6 +31,7 @@ app.use('/api', rawMaterialsPurchaseRouter);
 app.use('/api', productSalesRouter);
 app.use('/api', productionRouter);
 app.use('/api', salaryRouter);
+app.use('/api', bankRouter);
 
 app.listen(port, () => {
   console.log(`Server start on ${port} port!`);

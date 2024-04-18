@@ -191,3 +191,67 @@ export interface SalaryI {
   general: string;
   issued: boolean;
 }
+
+
+// BANK
+
+export interface IBank {
+  id: string;
+  loan_date: string;
+  loan_amount: string;
+  annual_interest_rate: string;
+  term_in_month: string;
+  penalty: string;
+}
+
+export interface BankMutation {
+  loan_date: string;
+  loan_amount: string;
+  annual_interest_rate: string;
+  term_in_month: string;
+  penalty: string;
+}
+
+export interface PaymentResponse {
+  id: string;
+  loan_part: string;
+  percent_amount: string;
+  penalty_amount: string;
+  total_amount: string;
+  payment_date: string;
+  payment_received_date: string;
+  overdue: string;
+  rest_money: string;
+  bank_id: string;
+}
+
+export interface PaymentMutationWithoutPenalty {
+  loan_part: string;
+  percent_amount: string;
+  penalty_amount: string;
+  total_amount: string;
+  payment_date: string;
+  payment_received_date: string;
+  overdue: string;
+  rest_money: string;
+  bank_id: string;
+}
+
+export interface PaymentMutation {
+  loan_part: string;
+  percent_amount: string;
+  penalty: string;
+  total_amount: string;
+  payment_date: string;
+  payment_received_date: string;
+  overdue: string;
+  rest_money: string;
+  bank_id: string;
+}
+
+export interface PenaltyCalculate {
+  total_amount: string;
+  penalty_amount: string;
+  overdue: string;
+  payment_received_date: string;
+}
