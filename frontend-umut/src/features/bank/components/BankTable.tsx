@@ -70,16 +70,18 @@ const BankTable: React.FC<Props> = ({ bankData }) => {
                           </IconButton>
                         </Tooltip>
                       </Grid>
-                      <Grid item xs>
-                        <Tooltip title="Pay credit">
-                          <IconButton
-                            component={Link}
-                            to={'/bank/pay/' + item.id}
-                          >
-                            <Paid />
-                          </IconButton>
-                        </Tooltip>
-                      </Grid>
+                      {!item.status && (
+                        <Grid item xs>
+                          <Tooltip title="Pay credit">
+                            <IconButton
+                              component={Link}
+                              to={'/bank/pay/' + item.id}
+                            >
+                              <Paid />
+                            </IconButton>
+                          </Tooltip>
+                        </Grid>
+                      )}
                     </Grid>
                   </TableCell>
                 </TableRow>

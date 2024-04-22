@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../app/hooks';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectCreditData, selectCreditFetching } from './paymentSlice';
 import { getPaymentList } from './paymentThunks';
 import Typography from '@mui/material/Typography';
@@ -18,7 +17,7 @@ import dayjs from 'dayjs';
 
 const PaymentList = () => {
   const { id } = useParams() as { id: string };
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const payments = useAppSelector(selectCreditData);
   const paymentFetching = useAppSelector(selectCreditFetching);
 
@@ -26,12 +25,27 @@ const PaymentList = () => {
     dispatch(getPaymentList(id));
   }, [dispatch, id]);
 
+  const loanPartAmount = payments.reduce((acc, number) => {
+    return acc + parseFloat(number.loan_part);
+  }, 0);
+
+  const percentAmount = payments.reduce((acc, number) => {
+    return acc + parseFloat(number.percent_amount);
+  }, 0);
+
+  const penaltyAmount = payments.reduce((acc, number) => {
+    return acc + parseFloat(number.penalty_amount);
+  }, 0);
+
+  const totalAmount = payments.reduce((acc, number) => {
+    return acc + parseFloat(number.total_amount);
+  }, 0);
 
   return (
     <Box>
       <Typography variant="h4" component={'div'} sx={{ margin: '10px 0', fontWeight: 'bold' }}>Payment List</Typography>
 
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <Paper sx={{ width: '100%', overflow: 'hidden', mb: 2 }}>
         {paymentFetching ? <CircularProgress /> : (
           <TableContainer sx={{ maxHeight: '700px' }}>
             <Table stickyHeader aria-label="sticky table">
@@ -84,6 +98,11 @@ const PaymentList = () => {
           </TableContainer>
         )}
       </Paper>
+
+      <Typography variant={'h5'} sx={{ fontWeight: 'bold' }}>Loan part amount: {loanPartAmount}</Typography>
+      <Typography variant={'h5'} sx={{ fontWeight: 'bold' }}>Percent Amount: {percentAmount}</Typography>
+      <Typography variant={'h5'} sx={{ fontWeight: 'bold' }}>Penalty Amount: {penaltyAmount}</Typography>
+      <Typography variant={'h5'} sx={{ fontWeight: 'bold', color: 'red' }}>Total Amount: {totalAmount}</Typography>
     </Box>
   );
 };

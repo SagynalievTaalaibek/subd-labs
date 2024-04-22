@@ -202,6 +202,7 @@ export interface IBank {
   annual_interest_rate: string;
   term_in_month: string;
   penalty: string;
+  status: boolean;
 }
 
 export interface BankMutation {

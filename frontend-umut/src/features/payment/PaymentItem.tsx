@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -23,7 +22,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 const PaymentItem = () => {
   const { id } = useParams() as { id: string };
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const creditData = useAppSelector(selectOneCredit);
   const budgetData = useAppSelector(selectBudget);
   const creditFetching = useAppSelector(selectCreditFetching);

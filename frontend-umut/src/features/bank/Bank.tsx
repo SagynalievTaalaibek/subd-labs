@@ -25,7 +25,7 @@ const Bank = () => {
     dispatch(fetchBudget());
   }, [dispatch]);
 
-
+  console.log(banks);
   return (
     <>
       <Button variant={'contained'} component={Link} to="/bank/create" sx={{ margin: '15px 0' }}>Create new
