@@ -1,9 +1,11 @@
 import express from 'express';
 import pool from '../db';
+import auth from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const rawMaterialsPurchaseRouter = express.Router();
 
-rawMaterialsPurchaseRouter.post('/raw-purchase', async (req, res, next) => {
+rawMaterialsPurchaseRouter.post('/raw-purchase', auth, permit('manager', 'admin'), async (req, res, next) => {
   try {
     const { raw_material_id, purchase_date, quantity, amount, employee_id } =
       req.body;
@@ -33,6 +35,7 @@ rawMaterialsPurchaseRouter.get('/raw-purchase', async (_req, res, next) => {
 
 rawMaterialsPurchaseRouter.delete(
   '/raw-purchase/:id',
+  auth, permit('manager', 'admin'),
   async (req, res, next) => {
     try {
       const id = req.params.id;

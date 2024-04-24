@@ -17,8 +17,10 @@ import {
   Grid,
 } from '@mui/material';
 import Button from '@mui/material/Button';
+import { selectUser } from '../user/usersSlice';
 
 const Production = () => {
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const productionsData = useAppSelector(selectProductions);
   const fetchProductionLoading = useAppSelector(selectProductionFetchLoading);
@@ -48,11 +50,13 @@ const Production = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Button variant="contained" component={Link} to="/production/create">
-          New Production
-        </Button>
-      </Grid>
+      {user && user.role !== 'director' && (
+        <Grid item xs={12}>
+          <Button variant="contained" component={Link} to="/production/create">
+            New Production
+          </Button>
+        </Grid>
+      )}
       <Grid item>
         {fetchProductionLoading ? (
           <CircularProgress />

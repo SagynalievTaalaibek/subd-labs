@@ -29,9 +29,11 @@ import { selectBudget } from '../budget/budgetSlice';
 import { fetchBudget } from '../budget/budgetThunks';
 import { LoadingButton } from '@mui/lab';
 import { Paid } from '@mui/icons-material';
+import { selectUser } from '../user/usersSlice';
 
 const Salary = () => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
   const salaryData = useAppSelector(selectSalary);
   const budgetData = useAppSelector(selectBudget);
   const salaryFetchLoading = useAppSelector(selectSalaryFetchLoading);
@@ -49,13 +51,15 @@ const Salary = () => {
   let generalSum = 0;
 
   useEffect(() => {
-    if (!updateData) {
-      dispatch(fetchSalary({ year, month }));
-    } else {
-      console.log(updateData);
-      dispatch(fetchUpdateSalary({ year, month }));
+    if (user?.role !== 'director') {
+      if (!updateData) {
+        dispatch(fetchSalary({ year, month }));
+      } else {
+        console.log(updateData);
+        dispatch(fetchUpdateSalary({ year, month }));
+      }
     }
-  }, [dispatch, year, month, updateData]);
+  }, [dispatch, year, month, updateData, user]);
 
   useEffect(() => {
     if (salaryData && salaryData[0] && salaryData[0].issued) {

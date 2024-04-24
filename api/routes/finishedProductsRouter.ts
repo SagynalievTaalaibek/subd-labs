@@ -1,5 +1,7 @@
 import express from 'express';
 import pool from '../db';
+import auth from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const finishedProductRouter = express.Router();
 
@@ -73,7 +75,7 @@ finishedProductRouter.delete(
 );
 */
 
-finishedProductRouter.post('/finished-product', async (req, res, next) => {
+finishedProductRouter.post('/finished-product', auth, permit('admin', 'manager'),async (req, res, next) => {
   try {
     const { name, unit_of_measure_id, quantity, amount } = req.body;
     const newProduct = await pool.query(
@@ -113,7 +115,7 @@ finishedProductRouter.get('/finished-product/:id', async (req, res, next) => {
   }
 });
 
-finishedProductRouter.put('/finished-product', async (req, res, next) => {
+finishedProductRouter.put('/finished-product', auth, permit('admin', 'manager'), async (req, res, next) => {
   try {
     const { id, name, unit_of_measure_id, quantity, amount } = req.body;
     const updatedProduct = await pool.query(
@@ -128,6 +130,7 @@ finishedProductRouter.put('/finished-product', async (req, res, next) => {
 
 finishedProductRouter.delete(
   '/finished-product/:id',
+  auth, permit('admin', 'manager'),
   async (req, res, next) => {
     try {
       const id = req.params.id;

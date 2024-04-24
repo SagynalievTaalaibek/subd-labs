@@ -26,8 +26,10 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import IngredientsTable from './components/IngredientsTable';
+import { selectUser } from '../user/usersSlice';
 
 const Ingredients = () => {
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const productsData = useAppSelector(selectProducts);
   const ingredientsData = useAppSelector(selectIngredients);
@@ -92,11 +94,13 @@ const Ingredients = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Button variant="contained" component={Link} to="/ingredients/create">
-          Create Ingredients
-        </Button>
-      </Grid>
+      {user && user.role !== 'director' && (
+        <Grid item xs={12}>
+          <Button variant="contained" component={Link} to="/ingredients/create">
+            Create Ingredients
+          </Button>
+        </Grid>
+      )}
       <Grid item xs={12}>
         <Box
           component="form"

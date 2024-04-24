@@ -17,3 +17,11 @@ export interface SalaryI {
   general: string;
   issued: boolean;
 }
+
+export interface UserFields {
+  email: string;
+  password: string;
+  full_name: string;
+  token: string;
+  role: string;
+}

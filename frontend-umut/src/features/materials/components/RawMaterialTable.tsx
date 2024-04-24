@@ -13,6 +13,8 @@ import IconButton from '@mui/material/IconButton';
 import { Delete, Edit } from '@mui/icons-material';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import dayjs from 'dayjs';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUser } from '../../user/usersSlice';
 dayjs.extend(LocalizedFormat);
 
 interface Props {
@@ -26,6 +28,8 @@ const RawMaterialTable: React.FC<Props> = ({
   onDelete,
   deleteLoading,
 }) => {
+  const user = useAppSelector(selectUser);
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: '700px' }}>
@@ -37,7 +41,9 @@ const RawMaterialTable: React.FC<Props> = ({
               <TableCell align="left">Units od measure</TableCell>
               <TableCell align="left">Quantity</TableCell>
               <TableCell align="left">Amount</TableCell>
-              <TableCell align="left">Action</TableCell>
+              {user && user.role !== 'director' && (
+                <TableCell align="left">Action</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -62,29 +68,31 @@ const RawMaterialTable: React.FC<Props> = ({
                   <TableCell component="th" scope="row">
                     {item.amount}
                   </TableCell>
-                  <TableCell component="th" scope="row">
-                    <Grid container spacing={2} alignContent="center">
-                      <Grid item xs>
-                        <IconButton
-                          component={Link}
-                          to={'/materials/update/' + item.id}
-                        >
-                          <Edit />
-                        </IconButton>
+                  {user && user.role !== 'director' && (
+                    <TableCell component="th" scope="row">
+                      <Grid container spacing={2} alignContent="center">
+                        <Grid item xs>
+                          <IconButton
+                            component={Link}
+                            to={'/materials/update/' + item.id}
+                          >
+                            <Edit />
+                          </IconButton>
+                        </Grid>
+                        <Grid item xs>
+                          <IconButton
+                            type="submit"
+                            disabled={
+                              deleteLoading ? deleteLoading === item.id : false
+                            }
+                            onClick={() => onDelete(item.id)}
+                          >
+                            <Delete color="error" />
+                          </IconButton>
+                        </Grid>
                       </Grid>
-                      <Grid item xs>
-                        <IconButton
-                          type="submit"
-                          disabled={
-                            deleteLoading ? deleteLoading === item.id : false
-                          }
-                          onClick={() => onDelete(item.id)}
-                        >
-                          <Delete color="error" />
-                        </IconButton>
-                      </Grid>
-                    </Grid>
-                  </TableCell>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
           </TableBody>

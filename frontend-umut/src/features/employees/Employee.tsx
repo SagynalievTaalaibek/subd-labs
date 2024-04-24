@@ -17,8 +17,10 @@ import {
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import EmployeeTable from './components/EmployeeTable';
+import { selectUser } from '../user/usersSlice';
 
 const Employee = () => {
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const employees = useAppSelector(selectEmployees);
   const deleteLoading = useAppSelector(selectDeleteEmployeeLoading);
@@ -47,11 +49,13 @@ const Employee = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Button variant="contained" component={Link} to="/employees/create">
-          Create employee
-        </Button>
-      </Grid>
+      {user && user.role !== 'director' && (
+        <Grid item xs={12}>
+          <Button variant="contained" component={Link} to="/employees/create">
+            Create employee
+          </Button>
+        </Grid>
+      )}
       <Grid item>
         {fetchLoading ? (
           <CircularProgress />

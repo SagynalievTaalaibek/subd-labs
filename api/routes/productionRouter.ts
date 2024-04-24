@@ -1,5 +1,7 @@
 import express from 'express';
 import pool from '../db';
+import auth from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const productionRouter = express.Router();
 
@@ -17,7 +19,7 @@ const productionRouter = express.Router();
   }
 });*/
 
-productionRouter.post('/production', async (req, res, next) => {
+productionRouter.post('/production', auth, permit('technologist', 'admin'), async (req, res, next) => {
   try {
     const { product_id, production_date, quantity, employee_id } = req.body;
     const result = await pool.query(
@@ -77,7 +79,7 @@ productionRouter.get('/production', async (_req, res, next) => {
   }
 });*/
 
-productionRouter.delete('/production/:id', async (req, res, next) => {
+productionRouter.delete('/production/:id', auth, permit('technologist', 'admin'), async (req, res, next) => {
   try {
     const id = req.params.id;
     await pool.query('CALL delete_production($1)', [id]);

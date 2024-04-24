@@ -12,12 +12,16 @@ import { Inventory, Paid } from '@mui/icons-material';
 import Paper from '@mui/material/Paper';
 import { IBank } from '../../../types';
 import dayjs from 'dayjs';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUser } from '../../user/usersSlice';
 
 interface Props {
   bankData: IBank[],
 }
 
 const BankTable: React.FC<Props> = ({ bankData }) => {
+  const user = useAppSelector(selectUser);
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: '700px' }}>
@@ -30,7 +34,9 @@ const BankTable: React.FC<Props> = ({ bankData }) => {
               <TableCell align="left">Annual Interest Rate</TableCell>
               <TableCell align="left">Penalty</TableCell>
               <TableCell align="left">Get Credit Date</TableCell>
-              <TableCell align="center">Action</TableCell>
+              {user && user.role !== 'director' && (
+                <TableCell align="center">Action</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -70,7 +76,7 @@ const BankTable: React.FC<Props> = ({ bankData }) => {
                           </IconButton>
                         </Tooltip>
                       </Grid>
-                      {!item.status && (
+                      {!item.status && user && user.role !== 'director' && (
                         <Grid item xs>
                           <Tooltip title="Pay credit">
                             <IconButton

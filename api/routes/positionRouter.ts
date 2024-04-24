@@ -1,9 +1,11 @@
 import express from 'express';
 import pool from '../db';
+import auth from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const positionRouter = express.Router();
 
-positionRouter.post('/position', async (req, res, next) => {
+positionRouter.post('/position',auth, permit('admin'), async (req, res, next) => {
   try {
     const position_name = req.body.name;
     const newPosition = await pool.query(
@@ -38,7 +40,7 @@ positionRouter.get('/position/:id', async (req, res, next) => {
   }
 });
 
-positionRouter.put('/position', async (req, res, next) => {
+positionRouter.put('/position', auth, permit('admin'), async (req, res, next) => {
   try {
     const { position_id, position_name } = req.body;
     const position = await pool.query(
@@ -51,7 +53,7 @@ positionRouter.put('/position', async (req, res, next) => {
   }
 });
 
-positionRouter.delete('/position/:id', async (req, res, next) => {
+positionRouter.delete('/position/:id', auth, permit('admin'), async (req, res, next) => {
   try {
     const id = req.params.id;
     await pool.query('DELETE FROM positions WHERE position_id = $1', [id]);

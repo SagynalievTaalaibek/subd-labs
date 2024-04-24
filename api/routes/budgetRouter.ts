@@ -1,5 +1,7 @@
 import express from 'express';
 import pool from '../db';
+import auth from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const budgetRouter = express.Router();
 
@@ -12,7 +14,7 @@ budgetRouter.get('/budget', async (_req, res, next) => {
   }
 });
 
-budgetRouter.put('/budget', async (req, res, next) => {
+budgetRouter.put('/budget', auth, permit('admin', 'accountant'), async (req, res, next) => {
   try {
     const { id, budget_amount, bonus, markup } = req.body;
     const budgetData = await pool.query(
@@ -25,7 +27,7 @@ budgetRouter.put('/budget', async (req, res, next) => {
   }
 });
 
-budgetRouter.put('/budget-add', async (req, res, next) => {
+budgetRouter.put('/budget-add', auth, permit('admin', 'accountant'), async (req, res, next) => {
   try {
     const { id, budget_amount } = req.body;
     const budgetData = await pool.query(

@@ -6,8 +6,10 @@ import { selectDeleteUnitLoading, selectFetchUnitLoading, selectUnits } from './
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import UnitsTable from './components/UnitsTable';
+import { selectUser } from '../user/usersSlice';
 
 const Units = () => {
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const unitsData = useAppSelector(selectUnits);
   const fetchLoading = useAppSelector(selectFetchUnitLoading);
@@ -38,12 +40,14 @@ const Units = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Button variant="contained" component={Link} to="/units/create">Create Units</Button>
-      </Grid>
+      {user && user.role !== 'director' && (
+        <Grid item xs={12}>
+          <Button variant="contained" component={Link} to="/units/create">Create Units</Button>
+        </Grid>
+      )}
       <Grid item>
-        {fetchLoading ? <CircularProgress/> : (
-          <UnitsTable units={unitsData} onDelete={onPositionDelete} deleteLoading={deleteLoading}/>
+        {fetchLoading ? <CircularProgress /> : (
+          <UnitsTable units={unitsData} onDelete={onPositionDelete} deleteLoading={deleteLoading} />
         )}
       </Grid>
       <Dialog open={Boolean(deleteId)} onClose={onDeleteCancel}>

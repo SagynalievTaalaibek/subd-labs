@@ -1,12 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { createEmployees, deleteEmployees, editEmployee, fetchEmployees, fetchOneEmployee } from './employeeThunks';
-import { EmployeeMutation, EmployeesI } from '../../types';
+import {
+  createEmployees,
+  deleteEmployees,
+  editEmployee,
+  editPasswordEmail,
+  fetchEmployees,
+  fetchOneEmployee,
+} from './employeeThunks';
+import { EmployeeResponseOne, EmployeesI } from '../../types';
 
 
 interface EmployeesState {
   employees: EmployeesI[],
-  oneEmployee: EmployeeMutation | null;
+  oneEmployee: EmployeeResponseOne | null;
   createEmployeeLoading: boolean;
   fetchEmployeeLoading: boolean;
   fetchOneEmployeeLoading: boolean;
@@ -60,6 +67,14 @@ export const employeeSlice = createSlice({
     }).addCase(editEmployee.fulfilled, (state) => {
       state.editEmployeeLoading = false;
     }).addCase(editEmployee.rejected, state => {
+      state.editEmployeeLoading = false;
+    });
+
+    builder.addCase(editPasswordEmail.pending, (state) => {
+      state.editEmployeeLoading = true;
+    }).addCase(editPasswordEmail.fulfilled, (state) => {
+      state.editEmployeeLoading = false;
+    }).addCase(editPasswordEmail.rejected, state => {
       state.editEmployeeLoading = false;
     });
 

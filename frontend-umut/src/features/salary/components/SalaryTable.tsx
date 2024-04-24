@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 import { SalaryI } from '../../../types';
 import IconButton from '@mui/material/IconButton';
 import { Edit } from '@mui/icons-material';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUser } from '../../user/usersSlice';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -43,6 +45,8 @@ const StyledIconEdit = styled(Edit)`
 `;
 
 const SalaryTable: React.FC<Props> = ({ salaryData, status }) => {
+  const user = useAppSelector(selectUser);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -58,7 +62,7 @@ const SalaryTable: React.FC<Props> = ({ salaryData, status }) => {
             <StyledTableCell align="center">Bonus</StyledTableCell>
             <StyledTableCell align="center">Main Salary</StyledTableCell>
             <StyledTableCell align="center">Issue</StyledTableCell>
-            {status && (
+            {status && user && user.role !== 'director' && (
               <StyledTableCell align="center">Actions</StyledTableCell>
             )}
           </TableRow>
@@ -90,7 +94,7 @@ const SalaryTable: React.FC<Props> = ({ salaryData, status }) => {
               <StyledTableCell align="center">
                 {item.issued ? 'Yes' : 'No'}
               </StyledTableCell>
-              {status && (
+              {status && user && user.role !== 'director' && (
                 <StyledTableCell align="center">
                   <IconButton component={Link} to={`/salary/update/${item.id}`}>
                     <StyledIconEdit />

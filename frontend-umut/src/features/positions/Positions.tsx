@@ -10,8 +10,10 @@ import {
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import PositionTable from './components/PositionTable';
+import { selectUser } from '../user/usersSlice';
 
 const Positions = () => {
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const positions = useAppSelector(selectPositions);
   const fetchLoading = useAppSelector(selectFetchPositionLoading);
@@ -42,9 +44,11 @@ const Positions = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Button variant="contained" component={Link} to="/positions/create">Create position</Button>
-      </Grid>
+      {user && user.role !== 'director' && (
+        <Grid item xs={12}>
+          <Button variant="contained" component={Link} to="/positions/create">Create position</Button>
+        </Grid>
+      )}
       <Grid item>
         {fetchLoading ? <CircularProgress/> : (
           <PositionTable position={positions} onDelete={onPositionDelete} deleteLoading={deletePositionLoading}/>

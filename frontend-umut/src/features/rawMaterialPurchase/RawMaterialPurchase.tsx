@@ -6,7 +6,7 @@ import { fetchBudget } from '../budget/budgetThunks';
 import {
   selectDeleteRawMaterialsPurchaseLoading,
   selectFetchRawMaterialsPurchaseLoading,
-  selectRawMaterialsPurchase
+  selectRawMaterialsPurchase,
 } from './purchaseSlice';
 import { selectBudget } from '../budget/budgetSlice';
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
@@ -14,8 +14,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import RawMaterialPurchaseTable from './components/RawMaterialPurchaseTable';
+import { selectUser } from '../user/usersSlice';
 
 const RawMaterialPurchase = () => {
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const budgetData = useAppSelector(selectBudget);
   const rawMaterialPurchase = useAppSelector(selectRawMaterialsPurchase);
@@ -48,14 +50,16 @@ const RawMaterialPurchase = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
-        <Button variant="contained" component={Link} to="/purchase/create/">New Purchase</Button>
+        {user && user.role !== 'director' && (
+          <Button variant="contained" component={Link} to="/purchase/create/">New Purchase</Button>
+        )}
       </Grid>
-      <Grid item xs={6} sx={{display: 'flex', alignItems: 'center'}}>
-        <AccountBalanceWalletIcon sx={{fontSize: '35px', marginRight: '5px'}}/>
+      <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center' }}>
+        <AccountBalanceWalletIcon sx={{ fontSize: '35px', marginRight: '5px' }} />
         <Typography variant="h5" component="div">{budgetData && budgetData.budget_amount} KG</Typography>
       </Grid>
       <Grid item>
-        {fetchLoading ? <CircularProgress/> : (
+        {fetchLoading ? <CircularProgress /> : (
           <RawMaterialPurchaseTable
             rawMaterialsPurchase={rawMaterialPurchase}
             deleteLoading={deleteLoading}

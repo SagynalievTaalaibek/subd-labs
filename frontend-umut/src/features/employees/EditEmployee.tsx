@@ -2,12 +2,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { fetchPositions } from '../positions/positionsThunks';
-import { editEmployee, fetchOneEmployee } from './employeeThunks';
+import { editEmployee, editPasswordEmail, fetchOneEmployee } from './employeeThunks';
 import { selectPositions } from '../positions/positionsSlice';
 import { selectEditEmployeeLoading, selectOneEmployee } from './employeeSlice';
 import Typography from '@mui/material/Typography';
-import EmployeeForm from './components/EmployeeForm';
-import { EmployeeMutation, EmployeesWithID } from '../../types';
+import { EmployeeEditPasswordEmail, EmployeeMutation, EmployeesWithID } from '../../types';
+import EmployeeUpdateForm from './components/EmployeeUpdateForm';
 
 const EditEmployee = () => {
   const dispatch = useAppDispatch();
@@ -27,17 +27,34 @@ const EditEmployee = () => {
   }, [dispatch, id]);
 
 
-  const onSubmit = async (employee: EmployeeMutation) => {
-    const updateEmployee: EmployeesWithID = {
-      employee_id: id,
-      full_name: employee.full_name,
-      position_id: employee.position_id,
-      phone: employee.phone,
-      address: employee.address,
-      salary: employee.salary,
-    };
+  const onSubmit = async (employee: EmployeeMutation, password?: boolean) => {
+    if (password) {
+      const updateEmployee: EmployeeEditPasswordEmail = {
+        employee_id: id,
+        full_name: employee.full_name,
+        position_id: employee.position_id,
+        phone: employee.phone,
+        address: employee.address,
+        salary: employee.salary,
+        email: employee.email,
+        password: employee.password,
+      };
 
-    await dispatch(editEmployee(updateEmployee));
+      dispatch(editPasswordEmail(updateEmployee));
+    } else {
+      const updateEmployee: EmployeesWithID = {
+        employee_id: id,
+        full_name: employee.full_name,
+        position_id: employee.position_id,
+        phone: employee.phone,
+        address: employee.address,
+        salary: employee.salary,
+        email: employee.email,
+      };
+
+      await dispatch(editEmployee(updateEmployee));
+    }
+
     navigate('/employees');
   };
 
@@ -45,12 +62,14 @@ const EditEmployee = () => {
   return (
     <>
       <Typography variant="h4" sx={{margin: '10px 0', fontWeight: 'bold'}}>Update Position</Typography>
-      <EmployeeForm
-        existingEmployee={oneEmployee ? oneEmployee : null}
-        isLoading={editLoading}
-        onSubmit={onSubmit}
-        positions={positions}
-      />
+      {oneEmployee && (
+        <EmployeeUpdateForm
+          existingEmployee={oneEmployee}
+          isLoading={editLoading}
+          onSubmit={onSubmit}
+          positions={positions}
+        />
+      )}
     </>
   );
 };

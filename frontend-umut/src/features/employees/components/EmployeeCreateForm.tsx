@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -11,7 +11,6 @@ interface Props {
   onSubmit: (employee: EmployeeMutation) => void;
   positions: PositionI[] | undefined;
   isLoading: boolean;
-  existingEmployee?: EmployeeMutation | null;
 }
 
 const initialSate = {
@@ -20,34 +19,21 @@ const initialSate = {
   salary: '',
   address: '',
   phone: '',
+  email: '',
+  password: '',
 };
 
-const EmployeeForm: React.FC<Props> = ({onSubmit, isLoading, existingEmployee, positions}) => {
-  if (!existingEmployee) {
-    existingEmployee = initialSate;
-  }
-  const [employee, setEmployee] = useState<EmployeeMutation>(existingEmployee);
-
-  useEffect(() => {
-    if (existingEmployee) {
-      setEmployee(existingEmployee);
-    }
-  }, [existingEmployee]);
+const EmployeeCreateForm: React.FC<Props> = ({ onSubmit, isLoading, positions }) => {
+  const [employee, setEmployee] = useState<EmployeeMutation>(initialSate);
 
   const onPositionSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     onSubmit(employee);
-    setEmployee({
-      full_name: '',
-      position_id: '',
-      salary: '',
-      address: '',
-      phone: '',
-    });
+    setEmployee(initialSate);
   };
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setEmployee(prevState => ({
       ...prevState,
       [name]: value,
@@ -55,7 +41,7 @@ const EmployeeForm: React.FC<Props> = ({onSubmit, isLoading, existingEmployee, p
   };
 
   const selectChangeHandler = (e: SelectChangeEvent) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setEmployee(prevState => ({
       ...prevState,
       [name]: value,
@@ -68,7 +54,7 @@ const EmployeeForm: React.FC<Props> = ({onSubmit, isLoading, existingEmployee, p
       <Box
         component="form"
         sx={{
-          '& .MuiTextField-root': {width: '45ch', mt: 1},
+          '& .MuiTextField-root': { width: '45ch', mt: 1 },
         }}
         onSubmit={onPositionSubmit}
       >
@@ -82,7 +68,7 @@ const EmployeeForm: React.FC<Props> = ({onSubmit, isLoading, existingEmployee, p
             onChange={inputChangeHandler}
           />
         </div>
-        <div style={{maxWidth: '405px', margin: '8px 0'}}>
+        <div style={{ maxWidth: '405px', margin: '8px 0' }}>
           <FormControl fullWidth>
             <InputLabel id="position_id">Position</InputLabel>
             <Select
@@ -132,6 +118,26 @@ const EmployeeForm: React.FC<Props> = ({onSubmit, isLoading, existingEmployee, p
             onChange={inputChangeHandler}
           />
         </div>
+        <div>
+          <TextField
+            label="Email"
+            required
+            id="email"
+            name="email"
+            value={employee.email}
+            onChange={inputChangeHandler}
+          />
+        </div>
+        <div>
+          <TextField
+            label="Password"
+            required
+            id="password"
+            name="password"
+            value={employee.password}
+            onChange={inputChangeHandler}
+          />
+        </div>
         <LoadingButton
           type="submit"
           color="primary"
@@ -139,15 +145,15 @@ const EmployeeForm: React.FC<Props> = ({onSubmit, isLoading, existingEmployee, p
           disabled={isLoading}
           loading={isLoading}
           loadingPosition="start"
-          startIcon={<SaveIcon/>}
-          sx={{mt: 1}}
+          startIcon={<SaveIcon />}
+          sx={{ mt: 1 }}
         >
           Save
         </LoadingButton>
         <Button
           type="button"
           variant="contained"
-          sx={{mt: 1, ml: 1}}
+          sx={{ mt: 1, ml: 1 }}
           component={Link}
           to="/employees"
         >
@@ -158,4 +164,4 @@ const EmployeeForm: React.FC<Props> = ({onSubmit, isLoading, existingEmployee, p
   );
 };
 
-export default EmployeeForm;
+export default EmployeeCreateForm;

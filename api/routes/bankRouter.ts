@@ -1,9 +1,11 @@
 import express from 'express';
 import pool from '../db';
+import auth from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const bankRouter = express.Router();
 
-bankRouter.post('/bank', async (req, res, next) => {
+bankRouter.post('/bank', auth, permit('admin', 'accountant'),async (req, res, next) => {
   try {
     const { loan_date, loan_amount, annual_interest_rate, term_in_month, penalty, budgetId } = req.body;
 
@@ -18,7 +20,7 @@ bankRouter.post('/bank', async (req, res, next) => {
   }
 });
 
-bankRouter.post('/bank/pay', async (req, res, next) => {
+bankRouter.post('/bank/pay', auth, permit('admin', 'accountant'),async (req, res, next) => {
   try {
     const { loan_part, percent_amount, penalty_amount, total_amount, payment_date, payment_received_date, overdue, rest_money, bank_id, budget_id } = req.body;
 

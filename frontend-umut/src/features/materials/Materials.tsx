@@ -10,8 +10,10 @@ import {
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import RawMaterialTable from './components/RawMaterialTable';
+import { selectUser } from '../user/usersSlice';
 
 const Materials = () => {
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const materials = useAppSelector(selectMaterials);
   const deleteLoading = useAppSelector(selectDeleteMaterialLoading);
@@ -41,9 +43,11 @@ const Materials = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Button variant="contained" component={Link} to="/materials/create">Create Raw Material</Button>
-      </Grid>
+      {user && user.role !== 'director' && (
+        <Grid item xs={12}>
+          <Button variant="contained" component={Link} to="/materials/create">Create Raw Material</Button>
+        </Grid>
+      )}
       <Grid item>
         {fetchLoading ? <CircularProgress/> : (
           <RawMaterialTable materials={materials} onDelete={onRawMaterialsDelete} deleteLoading={deleteLoading}/>

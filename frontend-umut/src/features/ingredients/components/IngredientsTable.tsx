@@ -11,6 +11,8 @@ import { Grid } from '@mui/material';
 import { IngredientI } from '../../../types';
 import IconButton from '@mui/material/IconButton';
 import { Delete, Edit } from '@mui/icons-material';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUser } from '../../user/usersSlice';
 
 interface Props {
   ingredients: IngredientI[] | undefined;
@@ -23,7 +25,10 @@ const IngredientsTable: React.FC<Props> = ({
   onDelete,
   deleteLoading,
 }) => {
+  const user = useAppSelector(selectUser);
+
   return (
+
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 550 }} aria-label="simple table">
         <TableHead>
@@ -31,7 +36,9 @@ const IngredientsTable: React.FC<Props> = ({
             <TableCell align="left">ID</TableCell>
             <TableCell align="left">Material Name</TableCell>
             <TableCell align="left">Quantity</TableCell>
-            <TableCell align="center">Action</TableCell>
+            {user && user.role !== 'director' && (
+              <TableCell align="center">Action</TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -50,29 +57,31 @@ const IngredientsTable: React.FC<Props> = ({
                 <TableCell component="th" scope="row">
                   {item.quantity}
                 </TableCell>
-                <TableCell component="th" scope="row">
-                  <Grid container spacing={2} alignContent="center">
-                    <Grid item xs>
-                      <IconButton
-                        component={Link}
-                        to={'/ingredients/update/' + item.id}
-                      >
-                        <Edit />
-                      </IconButton>
+                {user && user.role !== 'director' && (
+                  <TableCell component="th" scope="row">
+                    <Grid container spacing={2} alignContent="center">
+                      <Grid item xs>
+                        <IconButton
+                          component={Link}
+                          to={'/ingredients/update/' + item.id}
+                        >
+                          <Edit />
+                        </IconButton>
+                      </Grid>
+                      <Grid item xs>
+                        <IconButton
+                          type="submit"
+                          disabled={
+                            deleteLoading ? deleteLoading === item.id : false
+                          }
+                          onClick={() => onDelete(item.id)}
+                        >
+                          <Delete color="error" />
+                        </IconButton>
+                      </Grid>
                     </Grid>
-                    <Grid item xs>
-                      <IconButton
-                        type="submit"
-                        disabled={
-                          deleteLoading ? deleteLoading === item.id : false
-                        }
-                        onClick={() => onDelete(item.id)}
-                      >
-                        <Delete color="error" />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
         </TableBody>

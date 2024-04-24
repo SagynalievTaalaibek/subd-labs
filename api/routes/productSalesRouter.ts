@@ -1,9 +1,11 @@
 import express from 'express';
 import pool from '../db';
+import auth from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const productSalesRouter = express.Router();
 
-productSalesRouter.post('/product-sales', async (req, res, next) => {
+productSalesRouter.post('/product-sales', auth, permit('manager', 'admin'), async (req, res, next) => {
   try {
     const { product_id, sale_date, quantity, amount, employee_id } = req.body;
     const newProductSales = await pool.query(
@@ -30,7 +32,7 @@ productSalesRouter.get('/product-sales', async (_req, res, next) => {
   }
 });
 
-productSalesRouter.delete('/product-sales/:id', async (req, res, next) => {
+productSalesRouter.delete('/product-sales/:id', auth, permit('manager', 'admin'), async (req, res, next) => {
   try {
     const id = req.params.id;
     await pool.query('DELETE FROM product_sales where id = $1', [id]);

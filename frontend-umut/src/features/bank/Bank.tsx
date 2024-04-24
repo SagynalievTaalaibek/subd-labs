@@ -10,8 +10,10 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import Typography from '@mui/material/Typography';
 import { fetchBudget } from '../budget/budgetThunks';
 import { selectBudget } from '../budget/budgetSlice';
+import { selectUser } from '../user/usersSlice';
 
 const Bank = () => {
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const banks = useAppSelector(selectBanks);
   const fetchLoading = useAppSelector(selectBankFetching);
@@ -28,8 +30,16 @@ const Bank = () => {
   console.log(banks);
   return (
     <>
-      <Button variant={'contained'} component={Link} to="/bank/create" sx={{ margin: '15px 0' }}>Create new
-        credit</Button>
+      {user && user.role !== 'director' && (
+        <Button
+          variant={'contained'}
+          component={Link}
+          to="/bank/create"
+          sx={{ margin: '15px 0' }}
+        >
+          Create new credit
+        </Button>
+      )}
       <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', margin: '10px 0' }}>
         <AccountBalanceWalletIcon
           sx={{ fontSize: '35px', marginRight: '5px' }}

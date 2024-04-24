@@ -10,6 +10,7 @@ export interface EmployeesI {
   salary: number;
   address: string;
   phone: string;
+  email: string;
 }
 
 export interface EmployeesWithID {
@@ -19,6 +20,18 @@ export interface EmployeesWithID {
   salary: string;
   address: string;
   phone: string;
+  email: string;
+}
+
+export interface EmployeeEditPasswordEmail {
+  employee_id: string;
+  full_name: string;
+  position_id: string;
+  salary: string;
+  address: string;
+  phone: string;
+  email: string;
+  password: string;
 }
 
 export interface EmployeeMutation {
@@ -27,6 +40,17 @@ export interface EmployeeMutation {
   salary: string;
   address: string;
   phone: string;
+  email: string;
+  password: string;
+}
+
+export interface EmployeeResponseOne {
+  full_name: string;
+  position_id: string;
+  salary: string;
+  address: string;
+  phone: string;
+  email: string;
 }
 
 export interface UnitsI {
@@ -255,4 +279,25 @@ export interface PenaltyCalculate {
   penalty_amount: string;
   overdue: string;
   payment_received_date: string;
+}
+
+export interface UserI {
+  email: string;
+  full_name: string;
+  token: string;
+  role: string;
+}
+
+export interface RegisterResponse {
+  message: string;
+  user: UserI;
+}
+
+export interface LoginMutation {
+  email: string;
+  password: string;
+}
+
+export interface GlobalError {
+  error: string;
 }

@@ -1,5 +1,7 @@
 import express from 'express';
 import pool from '../db';
+import auth from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const ingredientsRouter = express.Router();
 
@@ -87,7 +89,7 @@ ingredientsRouter.delete('/ingredients/:id', async (req, res, next) => {
 
 */
 
-ingredientsRouter.post('/ingredients', async (req, res, next) => {
+ingredientsRouter.post('/ingredients', auth, permit('admin', 'technologist'), async (req, res, next) => {
   try {
     const { product_id, raw_material_id, quantity } = req.body;
     await pool.query('CALL create_new_ingredient($1, $2, $3)', [
@@ -130,7 +132,7 @@ ingredientsRouter.get('/ingredients/:id', async (req, res, next) => {
   }
 });
 
-ingredientsRouter.put('/ingredients', async (req, res, next) => {
+ingredientsRouter.put('/ingredients', auth, permit('admin', 'technologist'), async (req, res, next) => {
   try {
     const { id, quantity } = req.body;
     await pool.query('CALL update_ingredient_quantity($1, $2)', [id, quantity]);
@@ -141,7 +143,7 @@ ingredientsRouter.put('/ingredients', async (req, res, next) => {
   }
 });
 
-ingredientsRouter.delete('/ingredients/:id', async (req, res, next) => {
+ingredientsRouter.delete('/ingredients/:id', auth, permit('admin', 'technologist'), async (req, res, next) => {
   try {
     const id = req.params.id;
     await pool.query('CALL delete_ingredient_by_id($1)', [id]);

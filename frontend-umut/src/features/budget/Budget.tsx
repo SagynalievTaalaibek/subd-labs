@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import { LoadingButton } from '@mui/lab';
 import SaveIcon from '@mui/icons-material/Save';
 import { BUDGET_ID } from '../../constants';
+import { selectUser } from '../user/usersSlice';
 
 const style = {
   position: 'absolute',
@@ -26,6 +27,7 @@ const style = {
 };
 const Budget = () => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
   const budgetData = useAppSelector(selectBudget);
   const fetchBudgetLoading = useAppSelector(selectFetchBudgetLoading);
   const addSumLoading = useAppSelector(selectAddBudgetLoading);
@@ -76,11 +78,13 @@ const Budget = () => {
           </Grid>
         </>
       )}
-      <Grid item xs={12}>
-        <Button onClick={handleOpen} variant="contained">Add budget</Button>
-        <Button variant="contained" component={Link} to={'/budget/update/' + BUDGET_ID}
-                sx={{ marginLeft: '20px' }}>Edit</Button>
-      </Grid>
+      {user && user.role !== 'director' && (
+        <Grid item xs={12}>
+          <Button onClick={handleOpen} variant="contained">Add budget</Button>
+          <Button variant="contained" component={Link} to={'/budget/update/' + BUDGET_ID}
+                  sx={{ marginLeft: '20px' }}>Edit</Button>
+        </Grid>
+      )}
       <Modal
         open={open}
       >

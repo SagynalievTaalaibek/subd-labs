@@ -1,5 +1,7 @@
 import express from 'express';
 import pool from '../db';
+import auth from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const salaryRouter = express.Router();
 
@@ -211,7 +213,7 @@ salaryRouter.get('/salary', async (req, res, next) => {
   }
 });*/
 
-salaryRouter.get('/salary', async (req, res, next) => {
+salaryRouter.get('/salary', auth, permit('accountant', 'admin'), async (req, res, next) => {
   try {
     const { year, month } = req.query;
     const yearNumber = parseInt(year as string, 10);
@@ -229,7 +231,7 @@ salaryRouter.get('/salary', async (req, res, next) => {
   }
 });
 
-salaryRouter.put('/salary/update_issued_budget', async (req, res, next) => {
+salaryRouter.put('/salary/update_issued_budget', auth, permit('accountant', 'admin'), async (req, res, next) => {
   try {
     const { budgetId, budgetAmountUpdate, yearNumber, monthNumber } = req.body;
 
@@ -249,7 +251,7 @@ salaryRouter.put('/salary/update_issued_budget', async (req, res, next) => {
   }
 });
 
-salaryRouter.put('/salary', async (req, res, next) => {
+salaryRouter.put('/salary', auth, permit('accountant', 'admin'), async (req, res, next) => {
   try {
     const { id, general } = req.body;
 

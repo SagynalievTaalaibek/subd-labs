@@ -1,17 +1,17 @@
 export const apiURL = 'http://localhost:8000/api';
 export const pages = [
-  'Positions',
-  'Employees',
-  'Units',
-  'Products',
-  'Materials',
-  'Ingredients',
-  'Budget',
-  'Purchase',
-  'Product-Sales',
-  'Production',
-  'Salary',
-  'Bank',
+  { id: crypto.randomUUID().toString(), name: 'Positions', allowed: ['admin', 'director'] },
+  { id: crypto.randomUUID().toString(), name: 'Employees', allowed: ['admin', 'director'] },
+  { id: crypto.randomUUID().toString(), name: 'Units', allowed: ['admin', 'director', 'technologist'] },
+  { id: crypto.randomUUID().toString(), name: 'Products', allowed: ['admin', 'director', 'manager'] },
+  { id: crypto.randomUUID().toString(), name: 'Materials', allowed: ['admin', 'director', 'manager', 'technologist'] },
+  { id: crypto.randomUUID().toString(), name: 'Ingredients', allowed: ['admin', 'director', 'technologist'] },
+  { id: crypto.randomUUID().toString(), name: 'Budget', allowed: ['admin', 'director', 'accountant'] },
+  { id: crypto.randomUUID().toString(), name: 'Purchase', allowed: ['admin', 'director', 'manager'] },
+  { id: crypto.randomUUID().toString(), name: 'Product-Sales', allowed: ['admin', 'director', 'manager'] },
+  { id: crypto.randomUUID().toString(), name: 'Production', allowed: ['admin', 'director', 'technologist'] },
+  { id: crypto.randomUUID().toString(), name: 'Salary', allowed: ['admin', 'accountant'] },
+  { id: crypto.randomUUID().toString(), name: 'Bank', allowed: ['admin', 'director', 'accountant'] },
 ];
 
 export const BUDGET_ID = '7487f33c-e7a5-4a11-9abd-3ae187a6899d';
@@ -33,4 +33,5 @@ export const months = [
   { id: parseFloat(Math.random().toString()), month: 'November', value: 11 },
   { id: parseFloat(Math.random().toString()), month: 'December', value: 12 },
 ];
+
 

@@ -1,9 +1,11 @@
 import express from 'express';
 import pool from '../db';
+import auth from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const unitsOfMeasureRouter = express.Router();
 
-unitsOfMeasureRouter.post('/units', async (req, res, next) => {
+unitsOfMeasureRouter.post('/units', auth, permit('technologist', 'admin'), async (req, res, next) => {
   try {
     const name = req.body.name;
     const newUnits = await pool.query(
@@ -39,7 +41,7 @@ unitsOfMeasureRouter.get('/units/:id', async (req, res, next) => {
   }
 });
 
-unitsOfMeasureRouter.put('/units', async (req, res, next) => {
+unitsOfMeasureRouter.put('/units', auth, permit('technologist', 'admin'), async (req, res, next) => {
   try {
     const { id, name } = req.body;
     const units = await pool.query(

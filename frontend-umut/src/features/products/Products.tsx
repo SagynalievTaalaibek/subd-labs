@@ -6,10 +6,11 @@ import { selectDeleteProductsLoading, selectFetchProductsLoading, selectProducts
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import FinishedProductTable from './components/FinishedProductTable';
-
+import { selectUser } from '../user/usersSlice';
 
 
 const Products = () => {
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const products = useAppSelector(selectProducts);
   const fetchLoading = useAppSelector(selectFetchProductsLoading);
@@ -38,12 +39,14 @@ const Products = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Button variant="contained" component={Link} to="/products/create">Create Finished Product</Button>
-      </Grid>
+      {user && user.role !== 'director' && (
+        <Grid item xs={12}>
+          <Button variant="contained" component={Link} to="/products/create">Create Finished Product</Button>
+        </Grid>
+      )}
       <Grid item>
-        {fetchLoading ? <CircularProgress/> : (
-          <FinishedProductTable products={products} onDelete={onFinishedProductDelete} deleteLoading={deleteLoading}/>
+        {fetchLoading ? <CircularProgress /> : (
+          <FinishedProductTable products={products} onDelete={onFinishedProductDelete} deleteLoading={deleteLoading} />
         )}
       </Grid>
       <Dialog open={Boolean(deleteId)} onClose={onDeleteCancel}>

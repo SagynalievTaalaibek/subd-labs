@@ -1,9 +1,11 @@
 import express from 'express';
 import pool from '../db';
+import auth from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const rawMaterialsRouter = express.Router();
 
-rawMaterialsRouter.post('/raw-materials', async (req, res, next) => {
+rawMaterialsRouter.post('/raw-materials', auth, permit('manager', 'admin', 'technologist'),async (req, res, next) => {
   try {
     const { name, unit_of_measure_id, quantity, amount } = req.body;
     const newRawMaterial = await pool.query(
@@ -42,7 +44,7 @@ rawMaterialsRouter.get('/raw-materials/:id', async (req, res, next) => {
   }
 });
 
-rawMaterialsRouter.put('/raw-materials', async (req, res, next) => {
+rawMaterialsRouter.put('/raw-materials', auth, permit('manager', 'admin', 'technologist'), async (req, res, next) => {
   try {
     const { id, name, unit_of_measure_id, quantity, amount } = req.body;
     const updatedRawMaterial = await pool.query(

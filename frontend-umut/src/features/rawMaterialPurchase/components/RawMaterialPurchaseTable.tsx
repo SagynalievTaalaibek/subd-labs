@@ -12,6 +12,8 @@ import dayjs from 'dayjs';
 import { RawMaterialPurchaseI } from '../../../types';
 import IconButton from '@mui/material/IconButton';
 import { Delete } from '@mui/icons-material';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUser } from '../../user/usersSlice';
 
 dayjs.extend(LocalizedFormat);
 
@@ -26,6 +28,8 @@ const RawMaterialPurchaseTable: React.FC<Props> = ({
   onDelete,
   deleteLoading,
 }) => {
+  const user = useAppSelector(selectUser);
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: '700px' }}>
@@ -38,7 +42,9 @@ const RawMaterialPurchaseTable: React.FC<Props> = ({
               <TableCell align="left">Date</TableCell>
               <TableCell align="left">Quantity</TableCell>
               <TableCell align="left">Amount</TableCell>
-              <TableCell align="left">Action</TableCell>
+              {user && user.role !== 'director' && (
+                <TableCell align="left">Action</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -66,20 +72,22 @@ const RawMaterialPurchaseTable: React.FC<Props> = ({
                   <TableCell component="th" scope="row">
                     {item.amount}
                   </TableCell>
-                  <TableCell component="th" scope="row">
-                    <Grid container spacing={2} alignContent="center">
-                      <Grid item>
-                        <IconButton
-                          disabled={
-                            deleteLoading ? deleteLoading === item.id : false
-                          }
-                          onClick={() => onDelete(item.id)}
-                        >
-                          <Delete color={'error'} />
-                        </IconButton>
+                  {user && user.role !== 'director' && (
+                    <TableCell component="th" scope="row">
+                      <Grid container spacing={2} alignContent="center">
+                        <Grid item>
+                          <IconButton
+                            disabled={
+                              deleteLoading ? deleteLoading === item.id : false
+                            }
+                            onClick={() => onDelete(item.id)}
+                          >
+                            <Delete color={'error'} />
+                          </IconButton>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </TableCell>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
           </TableBody>

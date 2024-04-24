@@ -10,8 +10,10 @@ import {
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import ProductSalesTable from './components/ProductSalesTable';
+import { selectUser } from '../user/usersSlice';
 
 const ProductSales = () => {
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const productSalesData = useAppSelector(selectProductSales);
   const fetchProductSalesLoading = useAppSelector(selectFetchProductSalesLoading);
@@ -41,9 +43,11 @@ const ProductSales = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <Button variant="contained" component={Link} to="/product-sales/create/">New Product Sales</Button>
-      </Grid>
+      {user && user.role !== 'director' && (
+        <Grid item xs={6}>
+          <Button variant="contained" component={Link} to="/product-sales/create/">New Product Sales</Button>
+        </Grid>
+      )}
       <Grid item>
         {fetchProductSalesLoading ? <CircularProgress /> : (
           <ProductSalesTable

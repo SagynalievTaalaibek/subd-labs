@@ -11,6 +11,8 @@ import TableContainer from '@mui/material/TableContainer';
 import { EmployeesI } from '../../../types';
 import IconButton from '@mui/material/IconButton';
 import { Delete, Edit } from '@mui/icons-material';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUser } from '../../user/usersSlice';
 
 interface Props {
   employees: EmployeesI[] | undefined;
@@ -23,6 +25,8 @@ const EmployeeTable: React.FC<Props> = ({
   deleteLoading,
   onDelete,
 }) => {
+  const user = useAppSelector(selectUser);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -34,7 +38,10 @@ const EmployeeTable: React.FC<Props> = ({
             <TableCell align="left">Salary</TableCell>
             <TableCell align="left">Address</TableCell>
             <TableCell align="left">Phone</TableCell>
-            <TableCell align="center">Action</TableCell>
+            <TableCell align="left">Email</TableCell>
+            {user && user.role !== 'director' && (
+              <TableCell align="center">Action</TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -63,26 +70,31 @@ const EmployeeTable: React.FC<Props> = ({
                   {item.phone}
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  <Grid container spacing={2} alignContent="center">
-                    <Grid item xs>
-                      <IconButton
-                        component={Link}
-                        to={'/employees/update/' + item.employee_id}
-                      >
-                        <Edit />
-                      </IconButton>
-                    </Grid>
-                    <Grid item xs>
-                      <IconButton
-                        type="submit"
-                        disabled={deleteLoading}
-                        onClick={() => onDelete(item.employee_id)}
-                      >
-                        <Delete color="error" />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
+                  {item.email}
                 </TableCell>
+                {user && user.role !== 'director' && (
+                  <TableCell component="th" scope="row">
+                    <Grid container spacing={2} alignContent="center">
+                      <Grid item xs>
+                        <IconButton
+                          component={Link}
+                          to={'/employees/update/' + item.employee_id}
+                        >
+                          <Edit />
+                        </IconButton>
+                      </Grid>
+                      <Grid item xs>
+                        <IconButton
+                          type="submit"
+                          disabled={deleteLoading}
+                          onClick={() => onDelete(item.employee_id)}
+                        >
+                          <Delete color="error" />
+                        </IconButton>
+                      </Grid>
+                    </Grid>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
         </TableBody>

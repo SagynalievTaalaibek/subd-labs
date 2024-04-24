@@ -1,20 +1,36 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import { EmployeeMutation, EmployeesI, EmployeesWithID } from '../../types';
+import {
+  EmployeeEditPasswordEmail,
+  EmployeeMutation,
+  EmployeeResponseOne,
+  EmployeesI,
+  EmployeesWithID,
+} from '../../types';
 
 export const createEmployees = createAsyncThunk<void, EmployeeMutation>(
   'employee/create',
   async (employee) => {
-    const newEmployee = {
-      full_name: employee.full_name,
-      position_id: employee.position_id,
-      salary: parseFloat(employee.salary),
-      address: employee.address,
-      phone: employee.phone
-    };
+    try {
+      const newEmployee = {
+        full_name: employee.full_name,
+        position_id: employee.position_id,
+        salary: parseFloat(employee.salary),
+        address: employee.address,
+        phone: employee.phone,
+        email: employee.email,
+        password: employee.password,
+      };
 
-    await axiosApi.post('/employee', newEmployee);
-  }
+      await axiosApi.post('/employee', newEmployee);
+    } catch (error: any) {
+      if (error.response.status === 500) {
+        console.error('Internal Server Error:', error.message);
+      } else if (error.response.status === 422) {
+        alert('This email is already registered!');
+      }
+    }
+  },
 );
 
 export const fetchEmployees = createAsyncThunk<EmployeesI[], undefined>(
@@ -22,7 +38,7 @@ export const fetchEmployees = createAsyncThunk<EmployeesI[], undefined>(
   async () => {
     const response = await axiosApi.get<EmployeesI[]>('/employee');
     return response.data;
-  }
+  },
 );
 
 export const deleteEmployees = createAsyncThunk<void, string>(
@@ -37,7 +53,7 @@ export const deleteEmployees = createAsyncThunk<void, string>(
         alert('This employee is using in another table!');
       }
     }
-  }
+  },
 );
 
 export const editEmployee = createAsyncThunk<void, EmployeesWithID>(
@@ -47,16 +63,33 @@ export const editEmployee = createAsyncThunk<void, EmployeesWithID>(
   },
 );
 
-export const fetchOneEmployee = createAsyncThunk<EmployeeMutation, string>(
+
+export const editPasswordEmail = createAsyncThunk<void, EmployeeEditPasswordEmail>(
+  'employee/editPassword',
+  async (employee) => {
+    try {
+      await axiosApi.put('/employee?password=true', employee);
+    } catch (error: any) {
+      if (error.response.status === 500) {
+        console.error('Internal Server Error:', error. message);
+      } else if (error.response.status === 400) {
+        alert('This employee is using in another table!');
+      }
+    }
+  },
+);
+
+export const fetchOneEmployee = createAsyncThunk<EmployeeResponseOne, string>(
   'employee/fetchOne',
   async (id) => {
     const response = await axiosApi.get<EmployeesWithID>(`/employee/${id}`);
-    const oneEmployee: EmployeeMutation = {
+    const oneEmployee: EmployeeResponseOne = {
       full_name: response.data.full_name,
       address: response.data.address,
       salary: response.data.salary,
       position_id: response.data.position_id,
       phone: response.data.phone,
+      email: response.data.email,
     };
     return oneEmployee;
   },

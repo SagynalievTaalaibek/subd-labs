@@ -11,6 +11,8 @@ import { Grid } from '@mui/material';
 import { PositionI } from '../../../types';
 import IconButton from '@mui/material/IconButton';
 import { Delete, Edit } from '@mui/icons-material';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUser } from '../../user/usersSlice';
 
 interface Props {
   position: PositionI[];
@@ -23,6 +25,8 @@ const PositionTable: React.FC<Props> = ({
   onDelete,
   deleteLoading,
 }) => {
+  const user = useAppSelector(selectUser);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 400 }} aria-label="customized table">
@@ -30,7 +34,9 @@ const PositionTable: React.FC<Props> = ({
           <TableRow>
             <TableCell align="left">ID</TableCell>
             <TableCell align="left">Position</TableCell>
-            <TableCell align="center">Action</TableCell>
+            {user && user.role !== 'director' && (
+              <TableCell align="center">Action</TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -45,31 +51,33 @@ const PositionTable: React.FC<Props> = ({
               <TableCell component="th" scope="row">
                 {item.position_name}
               </TableCell>
-              <TableCell component="th" scope="row">
-                <Grid container spacing={2} alignContent="center">
-                  <Grid item xs>
-                    <IconButton
-                      component={Link}
-                      to={'/positions/update/' + item.position_id}
-                    >
-                      <Edit />
-                    </IconButton>
+              {user && user.role !== 'director' && (
+                <TableCell component="th" scope="row">
+                  <Grid container spacing={2} alignContent="center">
+                    <Grid item xs>
+                      <IconButton
+                        component={Link}
+                        to={'/positions/update/' + item.position_id}
+                      >
+                        <Edit />
+                      </IconButton>
+                    </Grid>
+                    <Grid item xs>
+                      <IconButton
+                        type="submit"
+                        disabled={
+                          deleteLoading
+                            ? deleteLoading === item.position_id
+                            : false
+                        }
+                        onClick={() => onDelete(item.position_id)}
+                      >
+                        <Delete color="error" />
+                      </IconButton>
+                    </Grid>
                   </Grid>
-                  <Grid item xs>
-                    <IconButton
-                      type="submit"
-                      disabled={
-                        deleteLoading
-                          ? deleteLoading === item.position_id
-                          : false
-                      }
-                      onClick={() => onDelete(item.position_id)}
-                    >
-                      <Delete color="error" />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </TableCell>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
