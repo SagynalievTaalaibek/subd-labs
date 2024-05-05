@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import { BankMutation, IBank } from '../../types';
+import { BankMutation, IBank, ReportMutation } from '../../types';
 import { BUDGET_ID } from '../../constants';
 
 export const createNewCredit = createAsyncThunk<void, BankMutation>(
@@ -25,4 +25,10 @@ export const fetchBanks = createAsyncThunk<IBank[]>(
   },
 );
 
-
+export const fetchBanksByDate = createAsyncThunk<IBank[], ReportMutation>(
+  'bank/fetchAllByDate',
+  async (date) => {
+    const result = await axiosApi.get(`/bank?startDate=${date.startDate}&endDate=${date.endDate}`);
+    return result.data;
+  },
+);

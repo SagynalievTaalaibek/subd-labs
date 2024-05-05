@@ -20,7 +20,7 @@ rawMaterialsPurchaseRouter.post('/raw-purchase', auth, permit('manager', 'admin'
   }
 });
 
-rawMaterialsPurchaseRouter.get('/raw-purchase', async (_req, res, next) => {
+/*rawMaterialsPurchaseRouter.get('/raw-purchase', async (_req, res, next) => {
   try {
     const RawMaterialPurchases = await pool.query(
       'SELECT rmp.id, rmp.quantity, rmp.amount, rmp.purchase_date, e.full_name as employee_full_name, rm.name as raw_material_name FROM raw_material_purchase rmp ' +
@@ -31,7 +31,24 @@ rawMaterialsPurchaseRouter.get('/raw-purchase', async (_req, res, next) => {
   } catch (e) {
     next(e);
   }
-});
+});*/
+
+
+rawMaterialsPurchaseRouter.get('/raw-purchase', async (req, res, next) => {
+  try {
+    const {startDate, endDate} = req.query;
+
+    if (startDate && endDate) {
+      const RawMaterialPurchases = await pool.query('SELECT * FROM get_raw_material_purchases_date($1, $2)', [startDate, endDate]);
+      res.send(RawMaterialPurchases.rows);
+    }
+
+    const RawMaterialPurchases = await pool.query('SELECT * FROM get_raw_material_purchases_date()');
+    res.send(RawMaterialPurchases.rows);
+  } catch (e) {
+    next(e);
+  }
+})
 
 rawMaterialsPurchaseRouter.delete(
   '/raw-purchase/:id',

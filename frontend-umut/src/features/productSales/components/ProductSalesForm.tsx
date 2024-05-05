@@ -39,7 +39,7 @@ const ProductSalesForm: React.FC<Props> = ({
   });
 
   useEffect(() => {
-    if (productSalesState.product_id.length > 1) {
+    if (productSalesState.product_id) {
       dispatch(fetchOneProduct(productSalesState.product_id));
     }
   }, [dispatch, productSalesState.product_id]);
@@ -178,7 +178,7 @@ const ProductSalesForm: React.FC<Props> = ({
           variant="contained"
           sx={{ mt: 1, ml: 1 }}
           component={Link}
-          to="/purchase"
+          to="/product-sales"
         >
           Back
         </Button>

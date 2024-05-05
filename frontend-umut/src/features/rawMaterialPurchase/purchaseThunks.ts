@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import { RawMaterialPurchaseI, RawMaterialPurchaseMutation } from '../../types';
+import { RawMaterialPurchaseI, RawMaterialPurchaseMutation, ReportMutation } from '../../types';
 
 export const createRawMaterialsPurchase = createAsyncThunk<void, RawMaterialPurchaseMutation>(
   'rawMaterialPurchase/create',
@@ -21,6 +21,14 @@ export const fetchRawMaterialsPurchases = createAsyncThunk<RawMaterialPurchaseI[
   'rawMaterialPurchase/fetchAll',
   async () => {
     const response = await axiosApi.get<RawMaterialPurchaseI[]>('/raw-purchase');
+    return response.data;
+  }
+);
+
+export const fetchRawMaterialsPurchasesByDate = createAsyncThunk<RawMaterialPurchaseI[], ReportMutation>(
+  'rawMaterialPurchase/fetchAllByDate',
+  async (date) => {
+    const response = await axiosApi.get<RawMaterialPurchaseI[]>(`/raw-purchase?startDate=${date.startDate}&endDate=${date.endDate}`);
     return response.data;
   }
 );

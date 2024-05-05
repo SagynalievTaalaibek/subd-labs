@@ -44,7 +44,7 @@ const ProductSales = () => {
   return (
     <Grid container spacing={2}>
       {user && user.role !== 'director' && (
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Button variant="contained" component={Link} to="/product-sales/create/">New Product Sales</Button>
         </Grid>
       )}

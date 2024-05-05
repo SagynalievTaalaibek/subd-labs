@@ -213,7 +213,7 @@ salaryRouter.get('/salary', async (req, res, next) => {
   }
 });*/
 
-salaryRouter.get('/salary', auth, permit('accountant', 'admin'), async (req, res, next) => {
+salaryRouter.get('/salary', auth, permit('accountant', 'admin', 'director'), async (req, res, next) => {
   try {
     const { year, month } = req.query;
     const yearNumber = parseInt(year as string, 10);

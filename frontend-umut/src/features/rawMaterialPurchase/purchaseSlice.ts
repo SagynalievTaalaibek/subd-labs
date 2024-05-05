@@ -3,7 +3,7 @@ import { RootState } from '../../app/store';
 import {
   createRawMaterialsPurchase,
   deleteRawMaterialsPurchase,
-  fetchRawMaterialsPurchases
+  fetchRawMaterialsPurchases, fetchRawMaterialsPurchasesByDate,
 } from './purchaseThunks';
 import { RawMaterialPurchaseI, RawMaterialPurchaseMutation } from '../../types';
 
@@ -44,6 +44,17 @@ export const rawMaterialsPurchaseSlice = createSlice({
     }).addCase(fetchRawMaterialsPurchases.rejected, state => {
       state.fetchRawMaterialsPurchaseLoading = false;
     });
+
+
+    builder.addCase(fetchRawMaterialsPurchasesByDate.pending, (state) => {
+      state.fetchRawMaterialsPurchaseLoading = true;
+    }).addCase(fetchRawMaterialsPurchasesByDate.fulfilled, (state, {payload}) => {
+      state.fetchRawMaterialsPurchaseLoading = false;
+      state.rawMaterialsPurchase = payload;
+    }).addCase(fetchRawMaterialsPurchasesByDate.rejected, state => {
+      state.fetchRawMaterialsPurchaseLoading = false;
+    });
+
 
     builder.addCase(deleteRawMaterialsPurchase.pending, (state, {meta}) => {
       state.deleteRawMaterialPurchaseLoading = meta.arg;

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { creteProduction, deleteProduction, fetchProduction } from './productionThunks';
+import { creteProduction, deleteProduction, fetchProduction, fetchProductionByDate } from './productionThunks';
 import { ProductionI } from '../../types';
 
 interface ProductionState {
@@ -36,6 +36,15 @@ export const productionSlice = createSlice({
       state.fetchProductionLoading = false;
       state.productions = payload;
     }).addCase(fetchProduction.rejected, (state) => {
+      state.fetchProductionLoading = false;
+    });
+
+    builder.addCase(fetchProductionByDate.pending, (state) => {
+      state.fetchProductionLoading = true;
+    }).addCase(fetchProductionByDate.fulfilled, (state, {payload}) => {
+      state.fetchProductionLoading = false;
+      state.productions = payload;
+    }).addCase(fetchProductionByDate.rejected, (state) => {
       state.fetchProductionLoading = false;
     });
 

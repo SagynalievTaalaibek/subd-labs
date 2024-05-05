@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import { ProductionI, ProductionMutation } from '../../types';
+import { ProductionI, ProductionMutation, ReportMutation } from '../../types';
 
 export const creteProduction = createAsyncThunk<void, ProductionMutation>(
   'production/create',
@@ -30,6 +30,14 @@ export const fetchProduction = createAsyncThunk<ProductionI[]>(
   'production/fetchAll',
   async () => {
     const response = await axiosApi.get<ProductionI[]>('/production');
+    return response.data;
+  },
+);
+
+export const fetchProductionByDate = createAsyncThunk<ProductionI[], ReportMutation>(
+  'production/fetchAllByDate',
+  async (date) => {
+    const response = await axiosApi.get<ProductionI[]>(`/production?startDate=${date.startDate}&endDate=${date.endDate}`);
     return response.data;
   },
 );

@@ -55,9 +55,16 @@ productionRouter.post('/production', auth, permit('technologist', 'admin'), asyn
   }
 });*/
 
-productionRouter.get('/production', async (_req, res, next) => {
+productionRouter.get('/production', async (req, res, next) => {
   try {
-    const productionData = await pool.query('SELECT * FROM get_productions()');
+    const {startDate, endDate} = req.query;
+
+    if (startDate && endDate) {
+      const productionData = await pool.query('SELECT * FROM get_productions_date($1, $2)', [startDate, endDate]);
+      res.send(productionData.rows);
+    }
+
+    const productionData = await pool.query('SELECT * FROM get_productions_date()');
     res.send(productionData.rows);
   } catch (e) {
     next(e);

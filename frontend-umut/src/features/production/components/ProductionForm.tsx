@@ -52,6 +52,8 @@ const ProductionForm: React.FC<Props> = ({
   const ingredients = useAppSelector(selectIngredients);
   const fetchIngredientsLoading = useAppSelector(selectFetchIngredientsLoading);
 
+  console.log(ingredients);
+
   const [productionState, setProductionState] = useState<ProductionMutation>({
     product_id: '',
     production_date: '',
@@ -60,7 +62,7 @@ const ProductionForm: React.FC<Props> = ({
   });
 
   useEffect(() => {
-    if (productionState.product_id.length > 2) {
+    if (parseFloat(productionState.product_id) > 0) {
       dispatch(fetchIngredients(productionState.product_id));
     }
   }, [dispatch, productionState.product_id]);

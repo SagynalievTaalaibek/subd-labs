@@ -23,6 +23,7 @@ const NewProductSales = () => {
     const createLoading = useAppSelector(selectCreateProductSalesLoading);
     const budgetData = useAppSelector(selectBudget);
 
+
     useEffect(() => {
       const fetchData = async () => {
         await dispatch(fetchProducts());
@@ -37,7 +38,9 @@ const NewProductSales = () => {
       const index = productsData.findIndex(value => value.id === productSales.product_id);
       let currentProduct = null;
 
-      if (!budgetData) {
+      console.log(productSales);
+
+      if (!budgetData?.budget_amount) {
         alert('Submit error in budget!');
         return;
       }

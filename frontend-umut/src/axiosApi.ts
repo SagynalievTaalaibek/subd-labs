@@ -11,7 +11,6 @@ export const addInterceptors = (store: Store<RootState>) => {
   axiosApi.interceptors.request.use((config) => {
     const token = store.getState().users.user?.token;
 
-    console.log('Token', token);
     config.headers.set('Authorization', token ? 'Bearer ' + token : undefined);
 
     return config;

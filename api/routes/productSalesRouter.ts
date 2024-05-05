@@ -19,18 +19,34 @@ productSalesRouter.post('/product-sales', auth, permit('manager', 'admin'), asyn
   }
 });
 
-productSalesRouter.get('/product-sales', async (_req, res, next) => {
+/*productSalesRouter.get('/product-sales', async (_req, res, next) => {
   try {
     const productSalesData = await pool.query(
       'SELECT ps.id, ps.quantity, ps.amount, ps.sale_date, e.full_name as employee_full_name, fp.name as product_name FROM product_sales ps ' +
-        'LEFT JOIN public.employees e on e.employee_id = ps.employee_id ' +
-        'LEFT JOIN public.finished_products fp on ps.product_id = fp.id',
+      'LEFT JOIN public.employees e on e.employee_id = ps.employee_id ' +
+      'LEFT JOIN public.finished_products fp on ps.product_id = fp.id',
     );
     res.send(productSalesData.rows);
   } catch (e) {
     next(e);
   }
-});
+});*/
+
+productSalesRouter.get('/product-sales', async (req, res, next) => {
+  try {
+    const {startDate, endDate} = req.query;
+
+    if (startDate && endDate) {
+      const productSalesData = await pool.query('SELECT * FROM get_product_sales_date($1, $2)', [startDate, endDate]);
+      res.send(productSalesData.rows);
+    }
+
+    const productSalesData = await pool.query('SELECT * FROM get_product_sales_date()');
+    res.send(productSalesData.rows);
+  } catch (e) {
+    next(e);
+  }
+})
 
 productSalesRouter.delete('/product-sales/:id', auth, permit('manager', 'admin'), async (req, res, next) => {
   try {

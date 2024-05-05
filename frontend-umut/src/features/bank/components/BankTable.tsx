@@ -12,6 +12,9 @@ import { Inventory, Paid } from '@mui/icons-material';
 import Paper from '@mui/material/Paper';
 import { IBank } from '../../../types';
 import dayjs from 'dayjs';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+
+dayjs.extend(LocalizedFormat);
 import { useAppSelector } from '../../../app/hooks';
 import { selectUser } from '../../user/usersSlice';
 
@@ -34,9 +37,7 @@ const BankTable: React.FC<Props> = ({ bankData }) => {
               <TableCell align="left">Annual Interest Rate</TableCell>
               <TableCell align="left">Penalty</TableCell>
               <TableCell align="left">Get Credit Date</TableCell>
-              {user && user.role !== 'director' && (
-                <TableCell align="center">Action</TableCell>
-              )}
+              <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

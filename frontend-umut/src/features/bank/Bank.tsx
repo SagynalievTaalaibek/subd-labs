@@ -27,7 +27,6 @@ const Bank = () => {
     dispatch(fetchBudget());
   }, [dispatch]);
 
-  console.log(banks);
   return (
     <>
       {user && user.role !== 'director' && (

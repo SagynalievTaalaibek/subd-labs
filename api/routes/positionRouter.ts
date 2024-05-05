@@ -7,10 +7,10 @@ const positionRouter = express.Router();
 
 positionRouter.post('/position',auth, permit('admin'), async (req, res, next) => {
   try {
-    const position_name = req.body.name;
+    const {position_name, role_id} = req.body;
     const newPosition = await pool.query(
-      'INSERT INTO positions (position_name) values ($1) RETURNING *',
-      [position_name],
+      'INSERT INTO positions (position_name, role_id) values ($1, $2) RETURNING *',
+      [position_name, role_id],
     );
     res.send(newPosition.rows[0]);
   } catch (e) {
@@ -20,8 +20,22 @@ positionRouter.post('/position',auth, permit('admin'), async (req, res, next) =>
 
 positionRouter.get('/position', async (_req, res, next) => {
   try {
-    const positions = await pool.query('SELECT * FROM positions');
+    const positions = await pool.query(
+      'SELECT p.position_id, p.position_name, r.role_name FROM positions p ' +
+      'LEFT JOIN public.roles r on p.role_id = r.id'
+    );
     res.send(positions.rows);
+  } catch (e) {
+    next(e);
+  }
+});
+
+positionRouter.get('/roles', async (_req, res, next) => {
+  try {
+    const roles = await pool.query(
+      'SELECT * FROM roles'
+    );
+    res.send(roles.rows);
   } catch (e) {
     next(e);
   }
@@ -42,10 +56,10 @@ positionRouter.get('/position/:id', async (req, res, next) => {
 
 positionRouter.put('/position', auth, permit('admin'), async (req, res, next) => {
   try {
-    const { position_id, position_name } = req.body;
+    const { position_id, position_name, role_id } = req.body;
     const position = await pool.query(
-      'UPDATE positions set position_name = $1 where position_id = $2 RETURNING *',
-      [position_name, position_id],
+      'UPDATE positions set position_name = $1, role_id = $2 where position_id = $3 RETURNING *',
+      [position_name, role_id, position_id],
     );
     res.send(position.rows[0]);
   } catch (e) {
