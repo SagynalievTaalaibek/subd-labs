@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { createNewCredit, fetchBanks } from './bankThunks';
+import { createNewCredit, fetchBanks, fetchBanksByDate } from './bankThunks';
 import { IBank } from '../../types';
 
 interface BankState {
@@ -34,6 +34,15 @@ const bankSlice = createSlice({
       state.banks = payload;
       state.fetchingBank = false;
     }).addCase(fetchBanks.rejected, state => {
+      state.fetchingBank = false;
+    });
+
+    builder.addCase(fetchBanksByDate.pending, state => {
+      state.fetchingBank = true;
+    }).addCase(fetchBanksByDate.fulfilled, (state, { payload }) => {
+      state.banks = payload;
+      state.fetchingBank = false;
+    }).addCase(fetchBanksByDate.rejected, state => {
       state.fetchingBank = false;
     });
   }),

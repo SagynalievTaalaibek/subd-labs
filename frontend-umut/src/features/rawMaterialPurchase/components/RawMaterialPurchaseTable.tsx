@@ -7,13 +7,13 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import { Grid } from '@mui/material';
-import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import dayjs from 'dayjs';
 import { RawMaterialPurchaseI } from '../../../types';
 import IconButton from '@mui/material/IconButton';
 import { Delete } from '@mui/icons-material';
 import { useAppSelector } from '../../../app/hooks';
 import { selectUser } from '../../user/usersSlice';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 
 dayjs.extend(LocalizedFormat);
 

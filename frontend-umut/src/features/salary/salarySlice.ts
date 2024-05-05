@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import {
-  fetchOneSalary,
+  fetchOneSalary, fetchReportSalary,
   fetchSalary,
   fetchUpdateSalary,
   issueSalary,
@@ -54,6 +54,19 @@ const salarySlice = createSlice({
       .addCase(fetchSalary.rejected, (state) => {
         state.fetchSalary = false;
       });
+
+    builder
+      .addCase(fetchReportSalary.pending, (state) => {
+        state.fetchSalary = true;
+      })
+      .addCase(fetchReportSalary.fulfilled, (state, { payload }) => {
+        state.fetchSalary = false;
+        state.salaryData = payload;
+      })
+      .addCase(fetchReportSalary.rejected, (state) => {
+        state.fetchSalary = false;
+      });
+
 
     builder
       .addCase(issueSalary.pending, (state) => {

@@ -1,14 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import { PositionI } from '../../types';
+import { IOnePosition, IRole, PositionI, PositionMutation } from '../../types';
 
-export const createPositions = createAsyncThunk<void, string>(
+export const createPositions = createAsyncThunk<void, PositionMutation>(
   'position/create',
   async (position) => {
-    const newPosition = {
-      name: position,
-    };
-    await axiosApi.post('/position', newPosition);
+    await axiosApi.post('/position', position);
   }
 );
 
@@ -19,6 +16,14 @@ export const fetchPositions = createAsyncThunk<PositionI[], undefined>(
     return response.data;
   }
 );
+
+export const fetchRoles = createAsyncThunk<IRole[]>(
+  'roles/fetch',
+  async () => {
+    const response = await axiosApi.get('/roles');
+    return response.data;
+  }
+)
 
 export const deletePosition = createAsyncThunk<void, string>(
   'position/delete',
@@ -35,22 +40,24 @@ export const deletePosition = createAsyncThunk<void, string>(
   },
 );
 
+interface PositionWithOutId  {
+  position_id: string;
+  position_name: string;
+  role_id: string;
+}
 
-export const editPosition = createAsyncThunk<void, PositionI>(
+
+export const editPosition = createAsyncThunk<void, PositionWithOutId>(
   'position/edit',
-  async ({position_id, position_name}) => {
-    const updatePosition: PositionI = {
-      position_id,
-      position_name,
-    };
-    await axiosApi.put('/position', updatePosition);
+  async (position) => {
+    await axiosApi.put('/position', position);
   },
 );
 
-export const fetchOnePosition = createAsyncThunk<PositionI, string>(
+export const fetchOnePosition = createAsyncThunk<IOnePosition, string>(
   'position/fetchOne',
   async (id) => {
-    const response = await axiosApi.get<PositionI>(`/position/${id}`);
+    const response = await axiosApi.get(`/position/${id}`);
     return response.data;
   },
 );

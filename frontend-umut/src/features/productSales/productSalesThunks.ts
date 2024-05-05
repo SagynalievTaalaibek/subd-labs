@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import { ProductSalesI, ProductSalesMutation } from '../../types';
+import { ProductSalesI, ProductSalesMutation, ReportMutation } from '../../types';
 
 
 export const createProductSales = createAsyncThunk<void, ProductSalesMutation>(
@@ -22,6 +22,14 @@ export const fetchProductSales = createAsyncThunk<ProductSalesI[], undefined>(
   'productSales/fetchAll',
   async () => {
     const response = await axiosApi.get<ProductSalesI[]>('/product-sales');
+    return response.data;
+  },
+);
+
+export const fetchProductSalesByDate = createAsyncThunk<ProductSalesI[], ReportMutation>(
+  'productSales/fetchAllByDate',
+  async (date) => {
+    const response = await axiosApi.get<ProductSalesI[]>(`/product-sales?startDate=${date.startDate}&endDate=${date.endDate}`);
     return response.data;
   },
 );

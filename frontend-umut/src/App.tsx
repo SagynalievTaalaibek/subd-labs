@@ -41,6 +41,7 @@ import { selectUser } from './features/user/usersSlice';
 import { useEffect } from 'react';
 import Home from './features/home/Home';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import Report from './features/report/Report';
 
 const App = () => {
   const user = useAppSelector(selectUser);
@@ -269,7 +270,7 @@ const App = () => {
             <Route
               path="/salary"
               element={
-                <ProtectedRoute isAllowed={user && ['admin', 'accountant'].includes(user.role.toLocaleLowerCase())}>
+                <ProtectedRoute isAllowed={user && ['admin', 'accountant', 'director'].includes(user.role.toLocaleLowerCase())}>
                   <Salary />
                 </ProtectedRoute>
               }
@@ -314,6 +315,15 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/report"
+              element={
+                <ProtectedRoute isAllowed={!!user}>
+                  <Report />
+                </ProtectedRoute>
+              }
+            />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Container>

@@ -51,15 +51,14 @@ const Salary = () => {
   let generalSum = 0;
 
   useEffect(() => {
-    if (user?.role !== 'director') {
-      if (!updateData) {
-        dispatch(fetchSalary({ year, month }));
-      } else {
-        console.log(updateData);
-        dispatch(fetchUpdateSalary({ year, month }));
-      }
+
+    if (!updateData) {
+      dispatch(fetchSalary({ year, month }));
+    } else {
+      console.log(updateData);
+      dispatch(fetchUpdateSalary({ year, month }));
     }
-  }, [dispatch, year, month, updateData, user]);
+  }, [dispatch, year, month, updateData]);
 
   useEffect(() => {
     if (salaryData && salaryData[0] && salaryData[0].issued) {
@@ -183,19 +182,21 @@ const Salary = () => {
                   General Sum: {generalSum}
                 </Typography>
               </Grid>
-              <Grid item xs={3}>
-                <LoadingButton
-                  color="primary"
-                  variant="contained"
-                  disabled={parseFloat(budgetData.budget_amount) < generalSum}
-                  loading={salaryUpdateLoading}
-                  loadingPosition="start"
-                  startIcon={<Paid />}
-                  onClick={() => onIssue()}
-                >
-                  Issue
-                </LoadingButton>
-              </Grid>
+              {user && user.role !== 'director' && (
+                <Grid item xs={3}>
+                  <LoadingButton
+                    color="primary"
+                    variant="contained"
+                    disabled={parseFloat(budgetData.budget_amount) < generalSum}
+                    loading={salaryUpdateLoading}
+                    loadingPosition="start"
+                    startIcon={<Paid />}
+                    onClick={() => onIssue()}
+                  >
+                    Issue
+                  </LoadingButton>
+                </Grid>
+              )}
             </Grid>
           )}
         </>

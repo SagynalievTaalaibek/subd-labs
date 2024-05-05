@@ -14,12 +14,25 @@ import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import Box from '@mui/material/Box';
 import dayjs from 'dayjs';
+import Button from '@mui/material/Button';
+import * as XLSX from 'xlsx';
 
 const PaymentList = () => {
   const { id } = useParams() as { id: string };
   const dispatch = useAppDispatch();
   const payments = useAppSelector(selectCreditData);
   const paymentFetching = useAppSelector(selectCreditFetching);
+
+  const exportToExcel = () => {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(payments);
+    XLSX.utils.book_append_sheet(wb, ws, 'payments');
+    XLSX.writeFile(wb, 'payments.xlsx');
+  };
+
+  const handleExport = () => {
+    exportToExcel();
+  };
 
   useEffect(() => {
     dispatch(getPaymentList(id));
@@ -43,8 +56,23 @@ const PaymentList = () => {
 
   return (
     <Box>
-      <Typography variant="h4" component={'div'} sx={{ margin: '10px 0', fontWeight: 'bold' }}>Payment List</Typography>
-
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Typography variant="h4" component={'div'} sx={{ margin: '10px 0', fontWeight: 'bold' }}>Payment
+          List</Typography>
+        <Button
+          variant="contained"
+          onClick={handleExport}
+          sx={{
+            ml: 2,
+            backgroundColor: 'green',
+            '&:hover': {
+              backgroundColor: 'darkgreen',
+            },
+          }}
+        >
+          EXPORT
+        </Button>
+      </Box>
       <Paper sx={{ width: '100%', overflow: 'hidden', mb: 2 }}>
         {paymentFetching ? <CircularProgress /> : (
           <TableContainer sx={{ maxHeight: '700px' }}>

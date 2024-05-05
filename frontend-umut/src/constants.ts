@@ -10,11 +10,12 @@ export const pages = [
   { id: crypto.randomUUID().toString(), name: 'Purchase', allowed: ['admin', 'director', 'manager'] },
   { id: crypto.randomUUID().toString(), name: 'Product-Sales', allowed: ['admin', 'director', 'manager'] },
   { id: crypto.randomUUID().toString(), name: 'Production', allowed: ['admin', 'director', 'technologist'] },
-  { id: crypto.randomUUID().toString(), name: 'Salary', allowed: ['admin', 'accountant'] },
+  { id: crypto.randomUUID().toString(), name: 'Salary', allowed: ['admin', 'accountant', 'director'] },
   { id: crypto.randomUUID().toString(), name: 'Bank', allowed: ['admin', 'director', 'accountant'] },
+  { id: crypto.randomUUID().toString(), name: 'Report', allowed: ['admin', 'director', 'accountant', 'manager', 'technologist'] },
 ];
 
-export const BUDGET_ID = '7487f33c-e7a5-4a11-9abd-3ae187a6899d';
+export const BUDGET_ID = '1';
 
 export const years = [
   2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025,

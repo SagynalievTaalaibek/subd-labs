@@ -48,7 +48,14 @@ bankRouter.get('/bank/list/:id', async (req, res, next) => {
 
 bankRouter.get('/bank', async (req, res, next) => {
   try {
-    const bank = await pool.query('SELECT * FROM get_banks()');
+    const {startDate, endDate} = req.query;
+
+    if (startDate && endDate) {
+      const bank = await pool.query('SELECT * FROM get_banks_date($1, $2)', [startDate, endDate]);
+      res.send(bank.rows);
+    }
+
+    const bank = await pool.query('SELECT * FROM get_banks_date()');
     return res.send(bank.rows);
   } catch (e) {
     console.log('Error getting bank', e);

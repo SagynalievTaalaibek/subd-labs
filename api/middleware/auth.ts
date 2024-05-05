@@ -21,18 +21,15 @@ const auth = async (req: RequestWithUser, res: Response, next: NextFunction) => 
 
   try {
     const user = await pool.query(
-      'SELECT employee_id, email, password, full_name, p.position_name as role, token FROM employees e ' +
+      'SELECT e.employee_id, e.full_name,  e.salary, e.address, e.phone, e.email, r.role_name as role FROM employees e ' +
       'LEFT JOIN public.positions p on p.position_id = e.position_id ' +
-      'WHERE token = $1',
-      [token],
+      'LEFT JOIN public.roles r on p.role_id = r.id WHERE token = $1', [token]
     );
-    console.log(user.rows);
-    console.log(token);
-    console.log('Length ',user.rows.length);
+
     if (user.rows.length === 0) {
       return res.status(401).send({ error: 'Wrong token!' });
     }
-    console.log( user.rows[0]);
+
     req.user = user.rows[0];
     next();
   } catch (error) {

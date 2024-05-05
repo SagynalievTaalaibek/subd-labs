@@ -13,6 +13,7 @@ import productSalesRouter from './routes/productSalesRouter';
 import productionRouter from './routes/productionRouter';
 import salaryRouter from './routes/salaryRouter';
 import bankRouter from './routes/bankRouter';
+import reportRouter from './routes/reportRouter';
 
 const app = express();
 const port = 8000;
@@ -32,6 +33,7 @@ app.use('/api', productSalesRouter);
 app.use('/api', productionRouter);
 app.use('/api', salaryRouter);
 app.use('/api', bankRouter);
+app.use('/api', reportRouter);
 
 app.listen(port, () => {
   console.log(`Server start on ${port} port!`);

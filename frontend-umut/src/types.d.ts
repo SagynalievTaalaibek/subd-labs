@@ -1,12 +1,30 @@
 export interface PositionI {
   position_id: string;
   position_name: string;
+  role_name: string;
+}
+
+export interface IOnePosition {
+  position_id: string;
+  position_name: string;
+  role_id: string;
+}
+
+export interface PositionMutation {
+  position_name: string;
+  role_id: string;
+}
+
+export interface IRole {
+  id: string;
+  role_name: string;
 }
 
 export interface EmployeesI {
   employee_id: string;
   full_name: string;
   position_name: string;
+  role_name: string;
   salary: number;
   address: string;
   phone: string;
@@ -217,6 +235,7 @@ export interface SalaryI {
 }
 
 
+
 // BANK
 
 export interface IBank {
@@ -300,4 +319,11 @@ export interface LoginMutation {
 
 export interface GlobalError {
   error: string;
+}
+
+// REPORT
+
+export interface ReportMutation {
+  startDate: string;
+  endDate: string;
 }

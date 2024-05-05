@@ -32,7 +32,6 @@ const generateTokenForUser = async (userId: string) => {
     client.release();
   }
 };
-
 employeeRouter.post('/employee', auth, permit('admin'), async (req, res) => {
   try {
     const { full_name, position_id, salary, address, phone, email, password } = req.body;
@@ -45,7 +44,6 @@ employeeRouter.post('/employee', auth, permit('admin'), async (req, res) => {
     if (existingUser.length) {
       return res.status(422).send({ error: 'This user is already registered!' });
     }
-
 
     const newEmployee = await pool.query(
       'INSERT INTO employees (full_name, position_id, salary, address, phone, email, password) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
@@ -69,8 +67,8 @@ employeeRouter.post('/employee/sessions', async (req, res, next) => {
     const { email, password } = req.body;
 
     const user = await pool.query(
-      'SELECT employee_id, email, password, full_name, p.position_name FROM employees e ' +
-      'LEFT JOIN public.positions p on p.position_id = e.position_id ' +
+      'SELECT employee_id, email, password, full_name, r.role_name FROM employees e ' +
+      'LEFT JOIN public.positions p on p.position_id = e.position_id LEFT JOIN public.roles r on p.role_id = r.id ' +
       'WHERE email = $1',
       [email],
     );
@@ -86,20 +84,20 @@ employeeRouter.post('/employee/sessions', async (req, res, next) => {
 
     const token = await generateTokenForUser(user.rows[0].employee_id);
 
-    await pool.query(
-      'SELECT email, password, full_name, p.position_name, token FROM employees e ' +
-      'LEFT JOIN public.positions p on p.position_id = e.position_id ' +
+    /*await pool.query(
+      'SELECT email, password, full_name,  r.role_name, token FROM employees e ' +
+      'LEFT JOIN public.roles r on p.role_id = r.id ' +
       'WHERE email = $1',
       [email],
     );
-
+*/
     return res.send({
       message: 'Email and password are correct!',
       user: {
         email: user.rows[0].email,
         full_name: user.rows[0].full_name,
         token,
-        role: user.rows[0].position_name,
+        role: user.rows[0].role_name,
       },
     });
   } catch (error) {
@@ -123,20 +121,10 @@ employeeRouter.delete('/employee/sessions', async (req, res, next) => {
       return res.send(successMessage);
     }
 
-    console.log('Token', token);
-
-    /*  const user = await pool.query(
-        'SELECT * FROM employees SET token = null WHERE token = $1',
-        [token],
-      );*/
-
     const user = await pool.query(
       'SELECT * FROM employees WHERE token = $1',
       [token],
     );
-
-
-    console.log(user.rows.length);
 
     if (!user.rows.length) {
       return res.send(successMessage);
@@ -155,7 +143,7 @@ employeeRouter.delete('/employee/sessions', async (req, res, next) => {
 employeeRouter.get('/employee', async (_req, res, next) => {
   try {
     const employees = await pool.query(
-      'SELECT e.employee_id, e.full_name,  e.salary, e.address, e.phone, position_name, e.email FROM employees e ' +
+      'SELECT e.employee_id, e.full_name,  e.salary, e.address, e.phone, p.position_name, e.email FROM employees e ' +
       'LEFT JOIN public.positions p on p.position_id = e.position_id',
     );
     res.send(employees.rows);

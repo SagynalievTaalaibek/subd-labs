@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { createProductSales, deleteProductSales, fetchProductSales } from './productSalesThunks';
+import {
+  createProductSales,
+  deleteProductSales,
+  fetchProductSales,
+  fetchProductSalesByDate,
+} from './productSalesThunks';
 import { ProductSalesI } from '../../types';
 
 interface ProductSalesState {
@@ -36,6 +41,15 @@ export const productSalesSlice = createSlice({
       state.createProductSalesLoading = false;
       state.productSales = payload;
     }).addCase(fetchProductSales.rejected, state => {
+      state.createProductSalesLoading = false;
+    });
+
+    builder.addCase(fetchProductSalesByDate.pending, (state) => {
+      state.createProductSalesLoading = true;
+    }).addCase(fetchProductSalesByDate.fulfilled, (state, {payload}) => {
+      state.createProductSalesLoading = false;
+      state.productSales = payload;
+    }).addCase(fetchProductSalesByDate.rejected, state => {
       state.createProductSalesLoading = false;
     });
 

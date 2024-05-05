@@ -1,11 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { createPositions, deletePosition, editPosition, fetchOnePosition, fetchPositions } from './positionsThunks';
-import { PositionI } from '../../types';
+import {
+  createPositions,
+  deletePosition,
+  editPosition,
+  fetchOnePosition,
+  fetchPositions,
+  fetchRoles,
+} from './positionsThunks';
+import { IOnePosition, IRole, PositionI } from '../../types';
 
 interface PositionsState {
   positions: PositionI[],
-  onePosition: PositionI | null;
+  roles: IRole[],
+  onePosition: IOnePosition | null;
   createPositionLoading: boolean;
   fetchPositionLoading: boolean;
   fetchOnePositionLoading: boolean;
@@ -15,6 +23,7 @@ interface PositionsState {
 
 const initialState: PositionsState = {
   positions: [],
+  roles: [],
   onePosition: null,
   createPositionLoading: false,
   fetchPositionLoading: false,
@@ -42,6 +51,15 @@ export const positionsSlice = createSlice({
       state.createPositionLoading = false;
       state.positions = payload;
     }).addCase(fetchPositions.rejected, state => {
+      state.createPositionLoading = false;
+    });
+
+    builder.addCase(fetchRoles.pending, (state) => {
+      state.createPositionLoading = true;
+    }).addCase(fetchRoles.fulfilled, (state, {payload}) => {
+      state.createPositionLoading = false;
+      state.roles = payload;
+    }).addCase(fetchRoles.rejected, state => {
       state.createPositionLoading = false;
     });
 
@@ -75,6 +93,7 @@ export const positionsSlice = createSlice({
 export const positionsReducer = positionsSlice.reducer;
 
 export const selectPositions = (state: RootState) => state.positions.positions;
+export const selectRoles = (state: RootState) => state.positions.roles;
 export const selectOnePosition = (state: RootState) => state.positions.onePosition;
 export const selectCreatePositionLoading = (state: RootState) => state.positions.createPositionLoading;
 export const selectFetchPositionLoading = (state: RootState) => state.positions.fetchPositionLoading;

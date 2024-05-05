@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import { SalaryI } from '../../types';
+import { ReportMutation, SalaryI } from '../../types';
 
 interface DataYear {
   year: string;
@@ -70,3 +70,12 @@ export const updateSalaryIssuedBudget = createAsyncThunk<
 >('salary/updateSalaryIssuedBudget', async (dataUpdate) => {
   await axiosApi.put('/salary/update_issued_budget', dataUpdate);
 });
+
+
+export const fetchReportSalary = createAsyncThunk<SalaryI[], ReportMutation>(
+  'report/fetchReportSalary',
+  async (date) => {
+    const response = await axiosApi.get(`/report/salary?startDate=${date.startDate}&endDate=${date.endDate}`);
+    return response.data;
+  },
+);

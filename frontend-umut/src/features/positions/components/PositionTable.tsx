@@ -34,6 +34,7 @@ const PositionTable: React.FC<Props> = ({
           <TableRow>
             <TableCell align="left">ID</TableCell>
             <TableCell align="left">Position</TableCell>
+            <TableCell align="left">Role</TableCell>
             {user && user.role !== 'director' && (
               <TableCell align="center">Action</TableCell>
             )}
@@ -50,6 +51,9 @@ const PositionTable: React.FC<Props> = ({
               </TableCell>
               <TableCell component="th" scope="row">
                 {item.position_name}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {item.role_name}
               </TableCell>
               {user && user.role !== 'director' && (
                 <TableCell component="th" scope="row">
