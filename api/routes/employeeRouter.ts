@@ -67,7 +67,7 @@ employeeRouter.post('/employee/sessions', async (req, res, next) => {
     const { email, password } = req.body;
 
     const user = await pool.query(
-      'SELECT employee_id, email, password, full_name, r.role_name FROM employees e ' +
+      'SELECT employee_id, email, password, full_name, r.role_name, position_name FROM employees e ' +
       'LEFT JOIN public.positions p on p.position_id = e.position_id LEFT JOIN public.roles r on p.role_id = r.id ' +
       'WHERE email = $1',
       [email],
@@ -98,6 +98,7 @@ employeeRouter.post('/employee/sessions', async (req, res, next) => {
         full_name: user.rows[0].full_name,
         token,
         role: user.rows[0].role_name,
+        position_name: user.rows[0].position_name,
       },
     });
   } catch (error) {

@@ -1,10 +1,8 @@
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { IBank, ProductionI, ProductSalesI, RawMaterialPurchaseI, SalaryI } from '../../types';
-import * as XLSX from 'xlsx';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Grid, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { selectProductions } from '../production/productionSlice';
 import { fetchProductionByDate } from '../production/productionThunks';
@@ -22,6 +20,8 @@ import { fetchBanksByDate } from '../bank/bankThunks';
 import ReportBank from './components/ReportBank';
 import { selectBanks } from '../bank/bankSlice';
 import { selectUser } from '../user/usersSlice';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 
 const Report = () => {
@@ -36,34 +36,33 @@ const Report = () => {
   const [dateEnd, setDateEnd] = useState('');
   const [filename, setFilename] = useState('');
 
-  const exportToExcel = (data: ProductionI[] | ProductSalesI[] | IBank[] | SalaryI[] | RawMaterialPurchaseI[], fileName: string) => {
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(data);
-    XLSX.utils.book_append_sheet(wb, ws, fileName.toLowerCase());
-    XLSX.writeFile(wb, `${fileName}.xlsx`);
+  const exportToPDF = () => {
+    const input = document.getElementById('report-container');
+    if (!input) return;
+
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210;
+      const pageHeight = 297;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save('report.pdf');
+    });
   };
 
-  const handleExport = () => {
-    switch (filename) {
-      case 'production':
-        exportToExcel(production, filename);
-        break;
-      case 'product-sales':
-        exportToExcel(sales, filename);
-        break;
-      case 'purchase':
-        exportToExcel(purchase, filename);
-        break;
-      case 'salary':
-        exportToExcel(salary, filename);
-        break;
-      case 'bank':
-        exportToExcel(bank, filename);
-        break;
-      default:
-        console.log('No such file');
-    }
-  };
 
   const onFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,6 +111,12 @@ const Report = () => {
         console.log('No such file');
     }
   }
+
+  useEffect(() => {
+    const now = new Date();
+    const formattedDate = now.toISOString().split('T')[0];
+    setDateEnd(formattedDate);
+  }, []);
 
   return (
     <>
@@ -176,19 +181,39 @@ const Report = () => {
       </Box>
       <Button
         variant="contained"
-        onClick={handleExport}
+        onClick={exportToPDF}
         sx={{
           mt: 3,
           mb: 2,
-          backgroundColor: 'green',
+          mr: 2,
+          backgroundColor: 'red',
           '&:hover': {
-            backgroundColor: 'darkgreen', // Цвет при наведении
+            backgroundColor: 'darkred',
           },
         }}
       >
-        EXPORT TO EXCEL
+        EXPORT TO PDF
       </Button>
-      {table}
+      <Box id="report-container" sx={{ padding: '15px' }}>
+        {dateStart.length > 0 && dateEnd.length > 0 && (
+          <Typography variant={'h4'} sx={{
+            margin: '10px 0',
+            fontWeight: 'bold',
+          }}>{filename.toUpperCase()} Date {dateStart} - {dateEnd}</Typography>
+        )}
+        {table}
+        {filename.length > 0 && (
+          <>
+            <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+              <Typography variant={'h5'} sx={{
+                marginTop: '150px',
+                fontWeight: 'bold',
+              }}>{user?.position_name.toUpperCase()} </Typography>
+              <Typography variant={'h5'} sx={{ marginTop: '150px', fontWeight: 'bold' }}>{user?.full_name}</Typography>
+            </Box>
+          </>
+        )}
+      </Box>
     </>
   );
 };

@@ -1,24 +1,23 @@
 import React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import TableBody from '@mui/material/TableBody';
 import dayjs from 'dayjs';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
-dayjs.extend(LocalizedFormat);
-import TableContainer from '@mui/material/TableContainer';
 import { ProductionI } from '../../../types';
+
+dayjs.extend(LocalizedFormat);
 
 interface Props {
   productionData: ProductionI[];
 }
 
 const ReportProduction: React.FC<Props> = ({productionData}) => {
+
+  const quantity  = productionData.reduce((acc, number) => {
+    return acc + parseFloat(number.quantity);
+  }, 0);
+
   return (
     <>
-      <TableContainer component={Paper}>
+      {/*<TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -55,7 +54,34 @@ const ReportProduction: React.FC<Props> = ({productionData}) => {
               ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer>*/}
+      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+        <thead>
+        <tr style={{ backgroundColor: '#f2f2f2', color: 'black'}}>
+          <th style={{ border: '1px solid black', padding: '8px' }}>ID</th>
+          <th style={{ border: '1px solid black', padding: '8px' }}>Product</th>
+          <th style={{ border: '1px solid black', padding: '8px' }}>Employee</th>
+          <th style={{ border: '1px solid black', padding: '8px' }}>Production date</th>
+          <th style={{ border: '1px solid black', padding: '8px' }}>Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        {productionData.map((item, index) => (
+          <tr key={item.id}>
+            <td style={{ border: '1px solid black', padding: '8px' }}>{index + 1}</td>
+            <td style={{ border: '1px solid black', padding: '8px' }}>{item.product_name}</td>
+            <td style={{ border: '1px solid black', padding: '8px' }}>{item.employee_full_name}</td>
+            <td style={{ border: '1px solid black', padding: '8px' }}>{dayjs(item.production_date).format('LL')}</td>
+            <td style={{ border: '1px solid black', padding: '8px' }}>{item.quantity}</td>
+          </tr>
+        ))}
+        <tr>
+          <td style={{ border: '1px solid black', padding: '8px' }}>Итог</td>
+          <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center', fontWeight: 'bold' }} colSpan={3}></td>
+          <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center', fontWeight: 'bold' }}>{quantity}</td>
+        </tr>
+        </tbody>
+      </table>
     </>
   );
 };

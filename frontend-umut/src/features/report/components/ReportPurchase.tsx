@@ -1,24 +1,26 @@
 import React from 'react';
-import Paper from '@mui/material/Paper';
-import TableContainer from '@mui/material/TableContainer';
-import Table from '@mui/material/Table';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import TableBody from '@mui/material/TableBody';
 import dayjs from 'dayjs';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
-dayjs.extend(LocalizedFormat);
 import { RawMaterialPurchaseI } from '../../../types';
+
+dayjs.extend(LocalizedFormat);
 
 interface Props {
   rawMaterialsPurchase: RawMaterialPurchaseI[];
 }
 
 const ReportPurchase: React.FC<Props>= ({rawMaterialsPurchase}) => {
+  const amount  = rawMaterialsPurchase.reduce((acc, number) => {
+    return acc + parseFloat(number.amount);
+  }, 0);
+
+  const quantity  = rawMaterialsPurchase.reduce((acc, number) => {
+    return acc + parseFloat(number.quantity);
+  }, 0);
+
   return (
     <>
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      {/*<Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: '700px' }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -62,7 +64,37 @@ const ReportPurchase: React.FC<Props>= ({rawMaterialsPurchase}) => {
             </TableBody>
           </Table>
         </TableContainer>
-      </Paper>
+      </Paper>*/}
+      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+        <thead>
+        <tr style={{ backgroundColor: '#f2f2f2', color: 'black'}}>
+          <th style={{ border: '1px solid black', padding: '8px' }}>ID</th>
+          <th style={{ border: '1px solid black', padding: '8px' }}>Material</th>
+          <th style={{ border: '1px solid black', padding: '8px' }}>Employee Name</th>
+          <th style={{ border: '1px solid black', padding: '8px' }}>Date</th>
+          <th style={{ border: '1px solid black', padding: '8px' }}>Quantity</th>
+          <th style={{ border: '1px solid black', padding: '8px' }}>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        {rawMaterialsPurchase.map((item, index) => (
+          <tr key={item.id}>
+            <td style={{ border: '1px solid black', padding: '8px' }}>{index + 1}</td>
+            <td style={{ border: '1px solid black', padding: '8px' }}>{item.raw_material_name}</td>
+            <td style={{ border: '1px solid black', padding: '8px' }}>{item.employee_full_name}</td>
+            <td style={{ border: '1px solid black', padding: '8px' }}>{dayjs(item.purchase_date).format('LL')}</td>
+            <td style={{ border: '1px solid black', padding: '8px' }}>{item.quantity}</td>
+            <td style={{ border: '1px solid black', padding: '8px' }}>{item.amount}</td>
+          </tr>
+        ))}
+        <tr>
+          <td style={{ border: '1px solid black', padding: '8px' }}>Итог</td>
+            <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center', fontWeight: 'bold' }} colSpan={3}></td>
+          <td style={{ border: '1px solid black', padding: '8px' , textAlign: 'center', fontWeight: 'bold'}}>{quantity}</td>
+          <td style={{ border: '1px solid black', padding: '8px' , textAlign: 'center', fontWeight: 'bold'}}>{amount}</td>
+        </tr>
+        </tbody>
+      </table>
     </>
   );
 };

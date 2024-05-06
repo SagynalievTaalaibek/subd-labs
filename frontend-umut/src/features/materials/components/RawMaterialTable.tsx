@@ -41,7 +41,7 @@ const RawMaterialTable: React.FC<Props> = ({
               <TableCell align="left">Units od measure</TableCell>
               <TableCell align="left">Quantity</TableCell>
               <TableCell align="left">Amount</TableCell>
-              {user && user.role !== 'director' && (
+              {user && user.role !== 'director' && user.role !== 'manager' && (
                 <TableCell align="left">Action</TableCell>
               )}
             </TableRow>
@@ -68,7 +68,7 @@ const RawMaterialTable: React.FC<Props> = ({
                   <TableCell component="th" scope="row">
                     {item.amount}
                   </TableCell>
-                  {user && user.role !== 'director' && (
+                  {user && user.role !== 'director' && user.role !== 'manager' &&  (
                     <TableCell component="th" scope="row">
                       <Grid container spacing={2} alignContent="center">
                         <Grid item xs>
