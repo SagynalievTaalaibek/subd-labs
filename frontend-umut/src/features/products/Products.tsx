@@ -39,7 +39,7 @@ const Products = () => {
 
   return (
     <Grid container spacing={2}>
-      {user && user.role !== 'director' && (
+      {user && user.role !== 'director' && user.role !== 'manager' && (
         <Grid item xs={12}>
           <Button variant="contained" component={Link} to="/products/create">Create Finished Product</Button>
         </Grid>

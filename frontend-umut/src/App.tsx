@@ -110,7 +110,7 @@ const App = () => {
             <Route
               path="/units"
               element={
-                <ProtectedRoute isAllowed={user && ['admin', 'director'].includes(user.role.toLocaleLowerCase())}>
+                <ProtectedRoute isAllowed={user && ['admin', 'director', 'technologist'].includes(user.role.toLocaleLowerCase())}>
                   <Units />
                 </ProtectedRoute>
               }
@@ -118,7 +118,7 @@ const App = () => {
             <Route
               path="/units/create"
               element={
-                <ProtectedRoute isAllowed={user && ['admin', 'director'].includes(user.role.toLocaleLowerCase())}>
+                <ProtectedRoute isAllowed={user && ['admin', 'director', 'technologist'].includes(user.role.toLocaleLowerCase())}>
                   <NewUnits />
                 </ProtectedRoute>
               }
@@ -126,7 +126,7 @@ const App = () => {
             <Route
               path="/units/update/:id"
               element={
-                <ProtectedRoute isAllowed={user && ['admin', 'director'].includes(user.role.toLocaleLowerCase())}>
+                <ProtectedRoute isAllowed={user && ['admin', 'director', 'technologist'].includes(user.role.toLocaleLowerCase())}>
                   <EditUnits />
                 </ProtectedRoute>
               }

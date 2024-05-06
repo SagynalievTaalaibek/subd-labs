@@ -303,6 +303,7 @@ export interface PenaltyCalculate {
 export interface UserI {
   email: string;
   full_name: string;
+  position_name: string;
   token: string;
   role: string;
 }
