@@ -23,13 +23,13 @@ productionRouter.post('/production', auth, permit('technologist', 'admin'), asyn
   try {
     const { product_id, production_date, quantity, employee_id } = req.body;
     const result = await pool.query(
-      'CALL create_production($1, $2, $3, $4, $5)',
-      [product_id, quantity, production_date, employee_id, null],
+      'SELECT * FROM create_production($1, $2, $3, $4)',
+      [product_id, quantity, production_date, employee_id],
     );
 
     // Получаем значение результата вызова процедуры
-    const resultCode = result.rows[0].result;
-    console.log(resultCode);
+    const resultCode = result.rows[0].create_production;
+
     // В зависимости от значения результата выполняем соответствующие действия
     if (resultCode === 1) {
       res.send('Производство успешно создано');

@@ -194,6 +194,7 @@ export interface ProductionI {
   id: string;
   product_name: string;
   quantity: string;
+  amount: string;
   production_date: string;
   employee_full_name: string;
 }

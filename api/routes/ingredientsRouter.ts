@@ -92,15 +92,18 @@ ingredientsRouter.delete('/ingredients/:id', async (req, res, next) => {
 ingredientsRouter.post('/ingredients', auth, permit('admin', 'technologist'), async (req, res, next) => {
   try {
     const { product_id, raw_material_id, quantity } = req.body;
-    await pool.query('CALL create_new_ingredient($1, $2, $3)', [
+    const result = await pool.query('SELECT * FROM create_new_ingredient($1, $2, $3)', [
       product_id,
       raw_material_id,
       quantity,
     ]);
 
-    res.send({ message: 'Create ingredients OK' });
+    if (result.rows[0].create_new_ingredient === 0) {
+      res.status(400).send({ error: 'Запись с указанным сырьем уже существует' });
+    } else {
+      res.send({ message: 'Create ingredients OK' });
+    }
   } catch (error) {
-    res.status(400).send({ error: 'Запись с указанным сырьем уже существует' });
     next(error);
   }
 });
@@ -124,8 +127,7 @@ ingredientsRouter.get('/ingredients-by-fp/:id', async (req, res, next) => {
 ingredientsRouter.get('/ingredients/:id', async (req, res, next) => {
   try {
     const id = req.params.id;
-    await pool.query('CALL get_ingredient_by_id($1)', [id]);
-    const ingredient = await pool.query('SELECT * FROM temp_ingredient');
+    const ingredient = await pool.query('SELECT * FROM get_ingredient_by_id($1)', [id]);
     res.send(ingredient.rows[0]);
   } catch (e) {
     next(e);
@@ -135,7 +137,7 @@ ingredientsRouter.get('/ingredients/:id', async (req, res, next) => {
 ingredientsRouter.put('/ingredients', auth, permit('admin', 'technologist'), async (req, res, next) => {
   try {
     const { id, quantity } = req.body;
-    await pool.query('CALL update_ingredient_quantity($1, $2)', [id, quantity]);
+    await pool.query('CALL update_ingredient($1, $2)', [id, quantity]);
 
     return res.send({ message: 'Edit Ok' });
   } catch (e) {

@@ -40,6 +40,7 @@ const ProductionTable: React.FC<Props> = ({
             <TableCell align="left">Employee</TableCell>
             <TableCell align="left">Production date</TableCell>
             <TableCell align="left">Quantity</TableCell>
+            <TableCell align="left">Amount</TableCell>
             {user && user.role !== 'director' && (
               <TableCell align="left">Action</TableCell>
             )}
@@ -66,6 +67,9 @@ const ProductionTable: React.FC<Props> = ({
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {item.quantity}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {item.amount}
                 </TableCell>
                 {user && user.role !== 'director' && (
                   <TableCell component="th" scope="row">
